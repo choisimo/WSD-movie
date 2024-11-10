@@ -1,0 +1,6 @@
+{
+  "home": "/",
+  "setting": "/user/setting",
+  "SignIn": "/user/signin",
+  "dashboard": "/page/dashboard"
+}
