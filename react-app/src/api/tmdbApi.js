@@ -26,6 +26,8 @@ export const getDetailMovie = async (movieId) => {
         // movieId가 URL에 포함되도록 수정
         const response = await api.get(`/movie/${movieId}`, {
             params: {
+                // 기존의 기본 파라미터에 추가
+                ...api.defaults.params,
                 append_to_response: 'videos,images' // 추가 데이터 요청
             }
         });
