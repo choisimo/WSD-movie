@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { TMDBApi } from 'api/tmdbApi';
+import { getDetailMovie } from 'api/tmdbApi';
 import './MovieDetailPage.css';
 
 
@@ -10,7 +10,7 @@ const MovieDetailPage = () => {
 
     useEffect(() => {
         const fetchMovie = async () => {
-            const detail = await TMDBApi.getDetailMovie(id);
+            const detail = await getDetailMovie(id);
             console.log('Fetched movie detail:', detail); // 이곳에서 로그 확인
             setMovie(detail);
         };

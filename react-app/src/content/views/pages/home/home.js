@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { TMDBApi } from 'api/tmdbApi';
+import { getMovies } from 'api/tmdbApi';
 import './home.css';
 import { useNavigate } from 'react-router-dom';
 
@@ -20,7 +20,7 @@ const HomePage = () => {
             const allMovies = await Promise.all(
                 sections.map(async (section) => ({
                     title: section.title,
-                    movies: await TMDBApi.getMovies(section.category)
+                    movies: await getMovies(section.category)
                 }))
             );
             setMovies(allMovies);
