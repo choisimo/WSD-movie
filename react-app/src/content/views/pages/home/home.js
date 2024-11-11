@@ -102,6 +102,8 @@ const HomePage = () => {
 const ContentRow = ({ movies, onMovieClick, category, loadMoreMovies }) => {
     const rowRef = useRef(null);
     const scrollInterval = useRef(null); // Scroll interval reference
+    const touchStartX = useRef(0); // Touch start position
+    const scrollLeft = useRef(0);   // Scroll left position
 
     const startScrollLeft = () => {
         stopScroll(); // 기존 스크롤 중지
@@ -136,6 +138,17 @@ const ContentRow = ({ movies, onMovieClick, category, loadMoreMovies }) => {
         }
     };
 
+    const handleTouchStart = (e) => {
+        touchStartX.current =  e.touches[0].clientX;    // 터치 시작 위치 저장
+        scrollLeft.current = rowRef.current.scrollLeft; // 현재 스크롤 위치 저장
+    };
+
+    const handleTouchMove = (e) => {
+        const touchX = e.touches[0].clientX;
+        const moveDistance = touchStartX.current - touchX; // 터치 이동 거리 계산
+        rowRef.current.scrollLeft = scrollLeft.current + moveDistance; // 스크롤 위치 변경
+    }
+
     useEffect(() => {
         const rowElement = rowRef.current;
         rowElement.addEventListener('scroll', handleScroll);
@@ -155,7 +168,11 @@ const ContentRow = ({ movies, onMovieClick, category, loadMoreMovies }) => {
             >
                 {"<"}
             </button>
-            <div className="content-row" ref={rowRef}>
+            <div className="content-row"
+                 ref={rowRef}
+                 onTouchStart={handleTouchStart}
+                 onTouchMove={handleTouchMove}
+            >
                 {movies.map((movie) => (
                     <div key={movie.id} className="content-item" onClick={() => onMovieClick(movie.id)}>
                         <img src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`} alt={movie.title} />
