@@ -5,6 +5,7 @@ import SignIn from 'content/views/pages/SignIn/SignIn';
 import Dashboard from 'content/views/pages/Dashboard';
 import HomePage from 'content/views/pages/home/home';
 import ProtectedRoute from 'content/components/security/protectionRouter';
+import MovieDetailPage from 'content/views/pages/detailView/MovieDetailPage';
 
 const AppRoutes = () => {
     return (
@@ -21,6 +22,12 @@ const AppRoutes = () => {
                     </ProtectedRoute>
                 }
             />
+
+            <Route path={routes.movie} element={
+                <ProtectedRoute>
+                    <MovieDetailPage />
+                </ProtectedRoute>
+                } />
 
             {/* 홈 페이지 */}
             <Route path={routes.home} element={<HomePage />} />
