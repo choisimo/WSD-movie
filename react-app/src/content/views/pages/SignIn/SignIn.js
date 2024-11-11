@@ -8,7 +8,7 @@ const SignIn = () => {
 
     // 상태
     const [isLoginVisible, setIsLoginVisible] = useState(true);
-    const [isAnimating, setIsAnimating] = useState(false); // 애니메이션 상태 추가
+    const [isAnimating, setIsAnimating] = useState(false);
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [registerEmail, setRegisterEmail] = useState('');
@@ -16,6 +16,7 @@ const SignIn = () => {
     const [confirmPassword, setConfirmPassword] = useState('');
     const [rememberMe, setRememberMe] = useState(false);
     const [acceptTerms, setAcceptTerms] = useState(false);
+    const [error, setError] = useState(''); // 에러 메시지 상태 추가
 
     const isLoginFormValid = email && password;
     const isRegisterFormValid =
@@ -27,6 +28,7 @@ const SignIn = () => {
 
     const toggleCard = () => {
         setIsAnimating(true); // 애니메이션 시작
+        setError('');
 
         setTimeout(() => {
             setIsLoginVisible(!isLoginVisible); // 폼 변경
@@ -39,21 +41,50 @@ const SignIn = () => {
 
     const handleLogin = async (e) => {
         e.preventDefault();
+
+        if (!email || !password) {
+            setError('email과 password 모두 입력하세요');
+        }
+
         try {
             await AuthService.tryLogin(email, password);
-            navigate('/');
+            navigate('/page/dashboard');
+            setError(''); // 성공 시 에러 메시지 초기화
         } catch (error) {
-            alert('Login failed');
+            setError(error.message); // 에러 메시지 설정
+            setTimeout(() => {
+                setError('');
+            },3000);
         }
     };
 
     const handleRegister = async (e) => {
         e.preventDefault();
+
+        if (!registerEmail || !registerPassword || !confirmPassword) {
+            setError('모든 필드에 기입하세요');
+            return;
+        }
+
+        if (registerPassword !== confirmPassword) {
+            setError('확인 비밀번호가 일치하지 않습니다');
+            return;
+        }
+
+        if (!acceptTerms) {
+            setError('동의 약관에 체크하세요');
+            return;
+        }
+
         try {
             await AuthService.tryRegister(registerEmail, registerPassword);
             toggleCard();
+            setError(''); // 성공 시 에러 메시지 초기화
         } catch (error) {
-            alert(error.message);
+            setError(error.message); // 에러 메시지 설정
+            setTimeout(() => {
+                setError('');
+            }, 3000);
         }
     };
 
@@ -61,6 +92,13 @@ const SignIn = () => {
         <div className="container">
             <div id="phone">
                 <div id="content-wrapper">
+                    {/* 에러 메시지 표시 */}
+                    {error && (
+                        <div className="error-message">
+                            {error}
+                        </div>
+                    )}
+
                     {/* 로그인 카드 */}
                     <div className={`card ${isAnimating ? 'jumping' : ''} ${!isLoginVisible ? 'fading-in' : ''}`} id="login">
                         {isLoginVisible && (

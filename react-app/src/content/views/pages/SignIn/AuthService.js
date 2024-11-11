@@ -4,17 +4,22 @@ class AuthService {
     tryLogin(email, password, saveToken = true) {
         return new Promise((resolve, reject) => {
             const users = JSON.parse(localStorage.getItem('users') || '[]');
-            const user = users.find(user => user.id === email && user.password === password);
+            const user = users.find(user => user.id === email);
 
-            if (user) {
+            if (!user) {
+                // 이메일이 존재하지 않는 경우
+                reject(new Error('로그인 실패! 존재 하지 않는 이메일 입니다.'));
+            } else if (user.password !== password) {
+                // 비밀번호가 일치하지 않는 경우
+                reject(new Error('로그인 실패! 비밀번호가 일치 하지 않습니다.'));
+            } else {
+                // 로그인 성공
                 if (saveToken) {
-                    localStorage.setItem('TMDb-Key', user.password);
+                    localStorage.setItem('TMDb-Key', user.password); // 로그인 여부 확인용 키 저장
                 }
                 resolve(user);
-            } else {
-                reject(new Error('Login failed'));
             }
-        })
+        });
     }
     // 회원가입 시도
     tryRegister(email, password) {

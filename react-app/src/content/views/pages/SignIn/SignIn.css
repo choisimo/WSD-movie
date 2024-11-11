@@ -118,3 +118,22 @@ button:hover:not(:disabled) {
 .account-check:hover {
     text-decoration: underline;
 }
+
+
+/* 에러 메시지 스타일 */
+.error-message {
+    background-color: #ff4d4f;
+    color: #fff;
+    padding: 10px;
+    border-radius: 5px;
+    font-weight: bold;
+    margin-bottom: 15px;
+    text-align: center;
+    animation: fadeInOut 4s ease-in-out;
+}
+
+/* 에러 메시지 페이드 인/아웃 애니메이션 */
+@keyframes fadeInOut {
+    0%, 100% { opacity: 0; }
+    10%, 90% { opacity: 1; }
+}
