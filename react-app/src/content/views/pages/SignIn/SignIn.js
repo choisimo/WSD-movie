@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './SignIn.css';
 import AuthService from "content/views/pages/SignIn/AuthService";
@@ -6,53 +6,36 @@ import AuthService from "content/views/pages/SignIn/AuthService";
 const SignIn = () => {
     const navigate = useNavigate();
 
+    const emailRef = useRef(null);
+    const passwordRef = useRef(null);
+    const registerEmailRef = useRef(null);
+    const registerPasswordRef = useRef(null);
+    const confirmPasswordRef = useRef(null);
+    const rememberMeRef = useRef(null);
+    const acceptTermsRef = useRef(null);
+
     const [isLoginVisible, setIsLoginVisible] = useState(true);
     const [isAnimating, setIsAnimating] = useState(false);
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-    const [registerEmail, setRegisterEmail] = useState('');
-    const [registerPassword, setRegisterPassword] = useState('');
-    const [confirmPassword, setConfirmPassword] = useState('');
-    const [rememberMe, setRememberMe] = useState(false);
-    const [acceptTerms, setAcceptTerms] = useState(false);
     const [error, setError] = useState('');
     const [showLoginPassword, setShowLoginPassword] = useState(false);
     const [showRegisterPassword, setShowRegisterPassword] = useState(false);
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
-    const isLoginFormValid = email && password;
-    const isRegisterFormValid =
-        registerEmail &&
-        registerPassword &&
-        confirmPassword &&
-        registerPassword === confirmPassword &&
-        acceptTerms;
-
     const toggleCard = () => {
         setIsAnimating(true);
         setError('');
-
         setTimeout(() => {
             setIsLoginVisible(!isLoginVisible);
         }, 300);
-
         setTimeout(() => {
             setIsAnimating(false);
         }, 600);
     };
 
-    const resetFormFields = () => {
-        setEmail('');
-        setPassword('');
-        setRegisterEmail('');
-        setRegisterPassword('');
-        setConfirmPassword('');
-        setRememberMe(false);
-        setAcceptTerms(false);
-    }
-
     const handleLogin = async (e) => {
         e.preventDefault();
+        const email = emailRef.current.value;
+        const password = passwordRef.current.value;
 
         if (!email || !password) {
             setError('모든 필드를 입력하세요');
@@ -65,24 +48,37 @@ const SignIn = () => {
             setError('');
         } catch (error) {
             setError(error.message);
-            setTimeout(() => {
-                setError('');
-            }, 3000);
         }
     };
 
     const handleRegister = async (e) => {
         e.preventDefault();
+        const registerEmail = registerEmailRef.current.value;
+        const registerPassword = registerPasswordRef.current.value;
+        const confirmPassword = confirmPasswordRef.current.value;
+        const acceptTerms = acceptTermsRef.current.checked;
+
+        if (!registerEmail || !registerPassword || !confirmPassword) {
+            setError('모든 필드를 입력하세요');
+            return;
+        }
+
+        if (!acceptTerms){
+            setError('가입 약관에 동의하셔야 합니다.');
+            return;
+        }
+
+        if (registerPassword !== confirmPassword) {
+            setError('확인 비밀번호가 일치하지 않습니다');
+            return;
+        }
 
         try {
-            await AuthService.tryRegister(registerEmail, registerPassword, confirmPassword, acceptTerms);
+            await AuthService.tryRegister(registerEmail, registerPassword, confirmPassword);
             toggleCard();
             setError('');
         } catch (error) {
             setError(error.message);
-            setTimeout(() => {
-                setError('');
-            }, 3000);
         }
     };
 
@@ -95,27 +91,24 @@ const SignIn = () => {
                             {error}
                         </div>
                     )}
-
                     <div className={`card ${isAnimating ? 'jumping' : ''} ${!isLoginVisible ? 'fading-in' : ''}`} id="login">
                         {isLoginVisible && (
                             <form onSubmit={handleLogin}>
                                 <h1>로그인</h1>
                                 <div className="input">
                                     <input
+                                        ref={emailRef}
                                         id="email"
                                         type="email"
-                                        value={email}
-                                        onChange={(e) => setEmail(e.target.value)}
                                         required
                                     />
                                     <label htmlFor="email">Username or Email</label>
                                 </div>
                                 <div className="input">
                                     <input
+                                        ref={passwordRef}
                                         id="password"
-                                        type={showLoginPassword ? 'text' : 'password'}
-                                        value={password}
-                                        onChange={(e) => setPassword(e.target.value)}
+                                        type={showLoginPassword ? "text" : "password"}
                                         required
                                     />
                                     <label htmlFor="password">Password</label>
@@ -129,14 +122,13 @@ const SignIn = () => {
                                 </div>
                                 <span className="checkbox remember">
                                     <input
+                                        ref={rememberMeRef}
                                         type="checkbox"
                                         id="remember"
-                                        checked={rememberMe}
-                                        onChange={(e) => setRememberMe(e.target.checked)}
                                     />
-                                    <label htmlFor="remember" className="read-text">Remember me</label>
+                                    <label htmlFor="remember" className="read-text">사용자 기억</label>
                                 </span>
-                                <button type="submit" disabled={!isLoginFormValid}>Login</button>
+                                <button type="submit">Login</button>
                             </form>
                         )}
                         {isLoginVisible && (
@@ -145,27 +137,24 @@ const SignIn = () => {
                             </span>
                         )}
                     </div>
-
                     <div className={`card ${isAnimating ? 'jumping' : ''} ${isLoginVisible ? 'fading-in' : ''}`} id="register">
                         {!isLoginVisible && (
                             <form onSubmit={handleRegister}>
                                 <h1>회원가입</h1>
                                 <div className="input">
                                     <input
+                                        ref={registerEmailRef}
                                         id="register-email"
                                         type="email"
-                                        value={registerEmail}
-                                        onChange={(e) => setRegisterEmail(e.target.value)}
                                         required
                                     />
                                     <label htmlFor="register-email">Email</label>
                                 </div>
                                 <div className="input">
                                     <input
+                                        ref={registerPasswordRef}
                                         id="register-password"
-                                        type={showRegisterPassword ? 'text' : 'password'}
-                                        value={registerPassword}
-                                        onChange={(e) => setRegisterPassword(e.target.value)}
+                                        type={showRegisterPassword ? "text" : "password"}
                                         required
                                     />
                                     <label htmlFor="register-password">Password</label>
@@ -179,10 +168,9 @@ const SignIn = () => {
                                 </div>
                                 <div className="input">
                                     <input
+                                        ref={confirmPasswordRef}
                                         id="confirm-password"
-                                        type={showConfirmPassword ? 'text' : 'password'}
-                                        value={confirmPassword}
-                                        onChange={(e) => setConfirmPassword(e.target.value)}
+                                        type={showConfirmPassword ? "text" : "password"}
                                         required
                                     />
                                     <label htmlFor="confirm-password">Confirm Password</label>
@@ -194,18 +182,17 @@ const SignIn = () => {
                                         {showConfirmPassword ? 'Hide' : 'Show'}
                                     </button>
                                 </div>
-                                <span className="checkbox remember">
+                                <span className="checkbox terms">
                                     <input
+                                        ref={acceptTermsRef}
                                         type="checkbox"
                                         id="terms"
-                                        checked={acceptTerms}
-                                        onChange={(e) => setAcceptTerms(e.target.checked)}
                                     />
                                     <label htmlFor="terms" className="read-text">
-                                        I agree to the <b>Terms and Conditions</b>
+                                        <b>이용약관</b>에 동의합니다
                                     </label>
                                 </span>
-                                <button type="submit" disabled={!isRegisterFormValid}>Register</button>
+                                <button type="submit">Register</button>
                             </form>
                         )}
                         {!isLoginVisible && (
