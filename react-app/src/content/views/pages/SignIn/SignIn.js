@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './SignIn.css';
-import AuthService from "./AuthService";
+import AuthService from "content/views/pages/SignIn/AuthService";
 
 const SignIn = () => {
     const navigate = useNavigate();
@@ -61,7 +61,7 @@ const SignIn = () => {
 
         try {
             await AuthService.tryLogin(email, password);
-            navigate('/page/dashboard');
+            navigate('/');
             setError('');
         } catch (error) {
             setError(error.message);

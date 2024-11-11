@@ -1,10 +1,10 @@
 import React from 'react';
 import { Routes, Route } from 'react-router-dom';
 import routes from './routes.json';
-import SignIn from './content/views/pages/SignIn/SignIn';
-import Dashboard from './content/views/pages/Dashboard';
-import HomePage from './content/layout/home';
-import ProtectedRoute from './content/components/security/protectionRouter';
+import SignIn from 'content/views/pages/SignIn/SignIn';
+import Dashboard from 'content/views/pages/Dashboard';
+import HomePage from 'content/views/pages/home/home';
+import ProtectedRoute from 'content/components/security/protectionRouter';
 
 const AppRoutes = () => {
     return (

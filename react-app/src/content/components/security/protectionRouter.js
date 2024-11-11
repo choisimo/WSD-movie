@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Navigate } from 'react-router-dom';
-import './projectionRouter.css';
+import 'content/components/security/projectionRouter.css';
 
 const ProtectionRouter = ({ prop }) => {
     const [isAuthenticated, setIsAuthenticated] = useState(localStorage.getItem('TMDb-Key') != null);

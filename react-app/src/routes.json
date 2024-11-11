@@ -2,5 +2,6 @@
   "home": "/",
   "setting": "/user/setting",
   "SignIn": "/user/signin",
-  "dashboard": "/page/dashboard"
+  "dashboard": "/page/dashboard",
+  "search": "/search"
 }
