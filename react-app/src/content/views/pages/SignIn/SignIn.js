@@ -54,6 +54,11 @@ const SignIn = () => {
     const handleLogin = async (e) => {
         e.preventDefault();
 
+        if (!email || !password) {
+            setError('모든 필드를 입력하세요');
+            return;
+        }
+
         try {
             await AuthService.tryLogin(email, password);
             navigate('/page/dashboard');
@@ -94,7 +99,7 @@ const SignIn = () => {
                     <div className={`card ${isAnimating ? 'jumping' : ''} ${!isLoginVisible ? 'fading-in' : ''}`} id="login">
                         {isLoginVisible && (
                             <form onSubmit={handleLogin}>
-                                <h1>Sign In</h1>
+                                <h1>로그인</h1>
                                 <div className="input">
                                     <input
                                         id="email"
@@ -136,7 +141,7 @@ const SignIn = () => {
                         )}
                         {isLoginVisible && (
                             <span className="account-check" onClick={toggleCard}>
-                                Don't have an account? <b>Sign up</b>
+                                계정이 없나요? <b>회원가입</b>
                             </span>
                         )}
                     </div>
@@ -144,7 +149,7 @@ const SignIn = () => {
                     <div className={`card ${isAnimating ? 'jumping' : ''} ${isLoginVisible ? 'fading-in' : ''}`} id="register">
                         {!isLoginVisible && (
                             <form onSubmit={handleRegister}>
-                                <h1>Sign Up</h1>
+                                <h1>회원가입</h1>
                                 <div className="input">
                                     <input
                                         id="register-email"
@@ -205,7 +210,7 @@ const SignIn = () => {
                         )}
                         {!isLoginVisible && (
                             <span className="account-check" onClick={toggleCard}>
-                                Already have an account? <b>Sign in</b>
+                                이미 계정이 있다면 <b>로그인</b>
                             </span>
                         )}
                     </div>
