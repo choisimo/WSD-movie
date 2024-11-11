@@ -1,139 +1,154 @@
-/* SignIn.css */
-
-/* 전체 화면 배경 색상 */
-body, .container {
+/* 전체 컨테이너 스타일 */
+.container {
     display: flex;
     justify-content: center;
     align-items: center;
     height: 100vh;
-    margin: 0;
-    background: linear-gradient(135deg, #f0f2f5, #d9e3f0);
+    background-color: #141414;
+    color: #ffffff;
     font-family: Arial, sans-serif;
 }
 
-#phone {
-    position: relative;
+/* 폼 래퍼 스타일 */
+#content-wrapper {
+    max-width: 450px;
     width: 100%;
-    max-width: 400px;
-    background-color: #ffffff;
-    border-radius: 15px;
-    padding: 40px;
-    box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.15);
-    z-index: 1;
-    overflow: hidden;
-}
-
-/* 애니메이션 효과 */
-.card {
-    opacity: 1;
-    transform: translateY(0);
-    transition: opacity 0.3s ease, transform 0.3s ease;
-}
-
-.card.jumping {
-    transform: translateY(-20px);
-    opacity: 0;
-}
-
-.card.fading-in {
-    transform: translateY(20px);
-    opacity: 0;
-    transition: transform 0.3s ease, opacity 0.3s ease;
-}
-
-/* 카드 제목 */
-h1 {
-    font-size: 24px;
-    font-weight: 700;
-    color: #333;
-    margin-bottom: 20px;
+    background: rgba(0, 0, 0, 0.75); /* 투명한 배경 */
+    padding: 60px 68px 40px;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
     text-align: center;
 }
 
-/* 입력 필드 */
+/* 에러 메시지 */
+.error-message {
+    background-color: #e87c03;
+    padding: 10px;
+    color: white;
+    font-size: 14px;
+    border-radius: 4px;
+    margin-bottom: 16px;
+    animation: fadeOut 3s ease-in-out forwards;
+}
+
+/* 제목 스타일 */
+#content-wrapper h1 {
+    margin-bottom: 24px;
+    font-size: 28px;
+    font-weight: 700;
+}
+
+/* 입력 필드 스타일 */
 .input {
     position: relative;
-    margin-bottom: 20px;
+    margin-bottom: 16px;
 }
 
 .input input {
     width: 100%;
-    padding: 12px;
-    border: 2px solid #e0e0e0;
-    border-radius: 8px;
-    outline: none;
+    padding: 15px;
+    border: none;
+    border-radius: 4px;
+    background-color: #333;
+    color: white;
     font-size: 16px;
-    transition: all 0.3s ease;
-}
-
-.input input:focus {
-    border-color: #4a90e2;
+    outline: none;
 }
 
 .input label {
     position: absolute;
-    top: -10px;
-    left: 10px;
-    background-color: #ffffff;
-    padding: 0 4px;
-    font-size: 12px;
-    color: #666;
-}
-
-/* 버튼 */
-button {
-    width: 100%;
-    padding: 12px;
-    background-color: #4a90e2;
-    color: #fff;
-    border: none;
-    border-radius: 8px;
+    top: 14px;
+    left: 15px;
+    color: #8c8c8c;
     font-size: 16px;
+    pointer-events: none;
+    transition: 0.2s;
+}
+
+.input input:focus + label,
+.input input:not(:placeholder-shown) + label {
+    top: -8px;
+    font-size: 12px;
+    color: #e87c03;
+}
+
+/* 로그인/회원가입 버튼 스타일 */
+button {
+    background-color: #e50914;
+    color: white;
+    padding: 16px;
+    font-size: 18px;
+    border: none;
+    border-radius: 4px;
+    width: 100%;
+    cursor: pointer;
     font-weight: bold;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
     margin-top: 20px;
+    transition: background 0.3s;
 }
 
-button:disabled {
-    background-color: #b3cde8;
-    cursor: not-allowed;
+button:hover {
+    background-color: #f40612;
 }
 
-button:hover:not(:disabled) {
-    background-color: #3b7bbf;
-}
-
-/* 링크 스타일 */
-.account-check {
-    display: block;
-    text-align: center;
-    margin-top: 20px;
-    color: #4a90e2;
+/* 체크박스 스타일 */
+.checkbox {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    margin-bottom: 20px;
+    color: #8c8c8c;
     font-size: 14px;
-    text-decoration: none;
-    cursor: pointer;
 }
 
-.account-check:hover {
+.checkbox input {
+    margin-right: 8px;
+}
+
+.read-text {
+    color: #8c8c8c;
+}
+
+.read-text b {
+    color: #fff;
+}
+
+/* 도움말 텍스트 스타일 */
+.account-check {
+    color: #8c8c8c;
+    font-size: 14px;
+    cursor: pointer;
+    margin-top: 20px;
+}
+
+.account-check b {
+    color: #fff;
     text-decoration: underline;
 }
 
-
-/* 에러 메시지 스타일 */
-.error-message {
-    background-color: #ff4d4f;
-    color: #fff;
-    padding: 10px;
-    border-radius: 5px;
-    font-weight: bold;
-    margin-bottom: 15px;
-    text-align: center;
-    animation: fadeInOut 4s ease-in-out;
+/* 애니메이션 */
+@keyframes fadeOut {
+    0% { opacity: 1; }
+    80% { opacity: 1; }
+    100% { opacity: 0; }
 }
 
-/* 에러 메시지 페이드 인/아웃 애니메이션 */
-@keyframes fadeInOut {
-    0%, 100% { opacity: 0; }
-    10%, 90% { opacity: 1; }
+
+
+.show-password-btn {
+    background: none;
+    border: none;
+    color: #999;
+    font-size: 0.9rem;
+    cursor: pointer;
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    padding: 0;
+}
+
+.show-password-btn:hover {
+    color: #fff;
+    background: none;
 }

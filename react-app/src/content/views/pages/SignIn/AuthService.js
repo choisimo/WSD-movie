@@ -22,14 +22,23 @@ class AuthService {
         });
     }
     // 회원가입 시도
-    tryRegister(email, password) {
+    tryRegister(email, password, confirmPassword, acceptTerms) {
         return new Promise((resolve, reject) => {
             try {
                 const users = JSON.parse(localStorage.getItem('users') || '[]');
                 const userExists = users.some(existingUser => existingUser.id === email);
 
+                if (!email || !password || !confirmPassword){
+                    throw new Error('모든 필드는 빈칸이 올 수 없습니다.');
+                }
+
                 if (userExists) {
-                    throw new Error('User already exists');
+                    throw new Error('이미 존재하는 이메일입니다.');
+                }
+
+                if (password !== confirmPassword)
+                {
+                    throw new Error('확인 비밀번호가 일치하지 않습니다.');
                 }
 
                 const newUser = { id: email, password: password };
