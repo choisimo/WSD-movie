@@ -58,6 +58,7 @@ const SignIn = () => {
         const confirmPassword = confirmPasswordRef.current.value;
         const acceptTerms = acceptTermsRef.current.checked;
 
+            console.log(registerEmail, registerPassword, confirmPassword, acceptTerms);
         if (!registerEmail || !registerPassword || !confirmPassword) {
             setError('모든 필드를 입력하세요');
             return;
