@@ -1,0 +1,53 @@
+/* Footer 전체 스타일 */
+.app-footer {
+    background-color: #141414;
+    color: #757575;
+    padding: 40px 20px;
+    text-align: center;
+    font-size: 14px;
+}
+
+/* 소셜 미디어 아이콘 */
+.social-media {
+    margin-bottom: 20px;
+}
+
+.social-media a {
+    margin: 0 10px;
+    color: #757575;
+    transition: color 0.3s ease;
+}
+
+.social-media a:hover {
+    color: #ffffff;
+}
+
+/* Footer 링크 */
+.footer-links ul {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 20px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.footer-links li {
+    margin: 5px 15px;
+}
+
+.footer-links a {
+    color: #757575;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.footer-links a:hover {
+    color: #ffffff;
+}
+
+/* 저작권 텍스트 */
+.footer-copyright {
+    margin-top: 20px;
+    color: #757575;
+}
