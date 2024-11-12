@@ -1,23 +1,24 @@
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import {useNavigate, useParams} from 'react-router-dom';
 import { getDetailMovie } from 'api/tmdbApi';
 import './MovieDetailPage.css';
 import SimilarMoviesList from "content/views/pages/detailView/SimilarMovieList";
 
 const MovieDetailPage = () => {
+
     const { id } = useParams();
-    console.log('Movie ID:', id);
     const [movie, setMovie] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
-
+    const [isExpanded, setIsExpanded] = useState(false);
+    const [showTrailer, setShowTrailer] = useState(false);
+    const navigate = useNavigate();
 
     useEffect(() => {
         const fetchMovie = async () => {
             try {
                 setLoading(true);
                 const detail = await getDetailMovie(id);
-                console.log('Fetched movie detail:', detail); // 로그 확인
                 if (detail) {
                     setMovie(detail);
                 } else {
@@ -36,40 +37,60 @@ const MovieDetailPage = () => {
     if (loading) return <p>Loading...</p>;
     if (error) return <p>{error}</p>;
 
+    const shortOverview = movie.overview.slice(0, 60);
+    const selectedGenres = movie.genres.slice(0, 3);
+    const trailerUrl = movie.videos && movie.videos.results.length > 0
+        ? `https://www.youtube.com/embed/${movie.videos.results[0].key}`
+        : null;
+    const handleGenreClick = (genre) => {
+        navigate(`/genre/${genre.id}`);
+    }
+
     return (
         <div className="movie-detail">
-            <div className="movie-banner" style={{ backgroundImage: `url(https://image.tmdb.org/t/p/w1280${movie.backdrop_path})` }}>
-                <div className="banner-content">
-                    <h1>{movie.title}</h1>
-                    <p>{movie.overview}</p>
-                    <p><strong>개봉일:</strong> {movie.release_date}</p>
+            <div
+                className="movie-banner"
+                style={{backgroundImage: `url(https://image.tmdb.org/t/p/w1280${movie.backdrop_path})`}}
+            >
+                <div className="overlay">
+                    <div className="content">
+                        <h1>{movie.title}</h1>
+                        <p className="movie-description">{movie.overview}</p>
+                        <p className="movie-info">
+                            <strong>평점:</strong> {movie.vote_average}<br/>
+                            <strong>장르:</strong>
+                            {movie.genres ? movie.genres.map((genre) => (
+                                <span
+                                    key={genre.id}
+                                    className="genre-link"
+                                    onClick={() => handleGenreClick(genre.id)}
+                                >
+                                    {genre.name}
+                                </span>
+                            )) : 'N/A'} <br/>
+                            <strong>개봉일:</strong> {movie.release_date}
+                        </p>
+                    </div>
                 </div>
             </div>
-            <div className="movie-info">
-                <img className="poster" src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`} alt={movie.title} />
-                <div className="details">
-                    <h2>{movie.title}</h2>
-                    <p><strong>평점:</strong> {movie.vote_average}</p>
-                    <p><strong>장르:</strong> {movie.genres.map((genre) => genre.name).join(', ')}</p>
-                    <p><strong>개봉일:</strong> {movie.release_date}</p>
-                    <p>{movie.overview}</p>
-                </div>
-            </div>
-            {movie.videos && movie.videos.results.length > 0 && (
+            <div className="movie-content">
                 <div className="movie-videos">
-                    <h3>트레일러</h3>
-                    <iframe
-                        width="560"
-                        height="315"
-                        src={`https://www.youtube.com/embed/${movie.videos.results[0].key}`}
-                        frameBorder="0"
-                        allow="autoplay; encrypted-media"
-                        allowFullScreen
-                        title="Movie Trailer"
-                    ></iframe>
+                    {trailerUrl ? (
+                        <div className="responsive-iframe">
+                            <iframe
+                                src={trailerUrl}
+                                frameBorder="0"
+                                allow="autoplay; encrypted-media"
+                                allowFullScreen
+                                title="Movie Trailer"
+                            ></iframe>
+                        </div>
+                    ) : (
+                        <div className="trailer-placeholder">비디오 없음</div>
+                    )}
                 </div>
-            )}
-            {movie.genres && <SimilarMoviesList genreIds={movie.genres.map((genre) => genre.id)} />}
+            </div>
+            <SimilarMoviesList genreIds={selectedGenres.map((genre) => genre.id)}/>
         </div>
     );
 };

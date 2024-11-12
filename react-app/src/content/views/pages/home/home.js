@@ -111,9 +111,9 @@ const ContentRow = ({ movies, onMovieClick, category, loadMoreMovies }) => {
         stopScroll(); // 기존 스크롤 중지
         scrollInterval.current = setInterval(() => {
             if (rowRef.current) {
-                rowRef.current.scrollLeft -= 10;
+                rowRef.current.scrollLeft -= 500;
             }
-        }, 10);
+        }, 1);
     };
 
     // 오른쪽으로 스크롤
@@ -121,9 +121,9 @@ const ContentRow = ({ movies, onMovieClick, category, loadMoreMovies }) => {
         stopScroll(); // 기존 스크롤 중지
         scrollInterval.current = setInterval(() => {
             if (rowRef.current) {
-                rowRef.current.scrollLeft += 10;
+                rowRef.current.scrollLeft += 500;
             }
-        }, 10);
+        }, 1);
     };
 
     // 스크롤 멈춤
@@ -135,7 +135,7 @@ const ContentRow = ({ movies, onMovieClick, category, loadMoreMovies }) => {
     };
 
     const handleScroll = () => {
-        if (rowRef.current.scrollLeft + rowRef.current.clientWidth >= rowRef.current.scrollWidth - 10) {
+        if (rowRef.current.scrollLeft + rowRef.current.clientWidth >= rowRef.current.scrollWidth - 500) {
             loadMoreMovies(category); // 스크롤 끝에 도달하면 더 많은 영화 로드
         }
     };
@@ -201,15 +201,13 @@ const ContentRow = ({ movies, onMovieClick, category, loadMoreMovies }) => {
                 {movies.map((movie) => (
                     <div key={movie.id} className="content-item" onClick={() => onMovieClick(movie.id)}>
                         <img src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`} alt={movie.title}/>
-                        <p className="movie-title">{movie.title}</p>
                         <div className="movie-info-hover">
                             <div className="star-rating">
                                 {renderStarRating(movie.vote_average)}
                             </div>
                             <p><strong>개봉일:</strong> {movie.release_date}</p>
-                            {movie.genres &&
-                                <p><strong>장르:</strong> {movie.genres.map(genre => genre.name).join(', ')}</p>}
                         </div>
+                        <p className="movie-title">{movie.title}</p>
                     </div>
                 ))}
             </div>
@@ -224,6 +222,5 @@ const ContentRow = ({ movies, onMovieClick, category, loadMoreMovies }) => {
         </div>
     );
 };
-
 
 export default HomePage;

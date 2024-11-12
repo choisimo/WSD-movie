@@ -1,29 +1,57 @@
-/* SimilarMoviesList.css */
 .similar-movies-container {
     position: relative;
-    overflow: hidden;
-    padding: 20px;
-    background-color: #222;
-    border-radius: 8px;
+    padding: 20px 20px;
+    background-color: #141414;
     color: #fff;
+    flex-direction: column;
+    align-items: center;
+}
+
+.similar-movies-container h3 {
+    margin-bottom: 15px;
+    font-size: 1.5rem;
+    text-align: center;
 }
 
 .similar-movies-list {
     display: flex;
-    flex-wrap: nowrap; /* 요소들이 한 줄에 나열 */
     overflow-x: auto;
-    scroll-snap-type: x mandatory;
-    gap: 15px;
-    padding-bottom: 10px;
     scroll-behavior: smooth;
+    padding-bottom: 10px;
+    gap: 15px;
+    scrollbar-width: none;
+    flex-wrap: nowrap; /* 기본 모드에서 한 줄로 */
+}
+
+.similar-movies-list.expanded {
+    flex-wrap: wrap;
+    justify-content: center;
+    row-gap: 20px;
+    max-height: 100%;
+}
+
+
+.show-all-btn {
+    margin-top: 15px;
+    background-color: rgba(14, 13, 13, 0.64);
+    color: #fff;
+    padding: 8px 16px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 1rem;
+}
+
+.show-all-btn:hover {
+    background-color: #f12a34;
 }
 
 .similar-movies-list::-webkit-scrollbar {
-    display: none; /* 스크롤바 숨기기 */
+    display: none; /* Chrome, Safari */
 }
 
 .similar-movie {
-    flex: 0 0 auto; /* 요소가 줄 바꿈 없이 가로로 배열됨 */
+    flex: 0 0 auto;
     width: 150px;
     cursor: pointer;
     text-align: center;
@@ -33,7 +61,7 @@
 .similar-movie img {
     width: 100%;
     border-radius: 8px;
-    transition: opacity 0.2s;
+    transition: transform 0.2s;
 }
 
 .similar-movie:hover {
@@ -46,6 +74,7 @@
     color: #ccc;
 }
 
+/* Scroll buttons */
 .scroll-button {
     position: absolute;
     top: 50%;
@@ -76,13 +105,21 @@
     background-color: rgba(0, 0, 0, 0.7);
 }
 
-/* PC에서 마우스를 올리면 좌우 버튼 보이기 */
+/* Show buttons on hover */
 .similar-movies-container:hover .scroll-button {
     display: block;
 }
 
-@media (max-width: 768px) {
-    .scroll-button {
-        display: none; /* 모바일에서는 버튼을 숨김 */
+/* Multi-line grid display for larger screens */
+@media (min-width: 1024px) {
+    .similar-movies-list {
+        flex-wrap: wrap;
+        max-height: 450px;
+        row-gap: 20px;
+        justify-content: center;
+    }
+
+    .similar-movie {
+        width: 180px;
     }
 }
