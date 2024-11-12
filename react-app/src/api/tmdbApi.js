@@ -23,11 +23,9 @@ export const getMovies = async (type) => {
 // 영화 세부 정보를 불러오는 함수
 export const getDetailMovie = async (movieId) => {
     try {
-        // movieId가 URL에 포함되도록 수정
+        console.log('API Key:', process.env.REACT_APP_TMDB_API_KEY); // API 키 확인용 로그
         const response = await api.get(`/movie/${movieId}`, {
             params: {
-                // 기존의 기본 파라미터에 추가
-                ...api.defaults.params,
                 append_to_response: 'videos,images' // 추가 데이터 요청
             }
         });
@@ -38,3 +36,6 @@ export const getDetailMovie = async (movieId) => {
         return null;
     }
 };
+
+
+
