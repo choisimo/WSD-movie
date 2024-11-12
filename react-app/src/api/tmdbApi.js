@@ -13,6 +13,7 @@ const api = axios.create({
 export const getMovies = async (type) => {
     try {
         const response = await api.get(`/movie/${type}`);
+        console.log(response);
         return response.data.results;
     } catch (error) {
         console.error('TMDB API Error:', error);
@@ -20,7 +21,6 @@ export const getMovies = async (type) => {
     }
 };
 
-/*
 // 영화 세부 정보를 불러오는 함수
 export const getDetailMovie = async (movieId) => {
     try {
@@ -41,8 +41,8 @@ export const getDetailMovie = async (movieId) => {
         return null;
     }
 };
-*/
 
+/*
 
 // 영화 세부 정보를 불러오는 함수
 export const getDetailMovie = async (movieId) => {
@@ -60,4 +60,5 @@ export const getDetailMovie = async (movieId) => {
         return null;
     }
 };
+*/
 
