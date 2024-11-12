@@ -56,7 +56,7 @@
     }
 }
 .banner h1 {
-    font-size: 3rem;
+    font-size: clamp(2rem, 5vw, 3rem); /* 글자 크기 반응형 설정 */
     margin-bottom: 10px;
 }
 
@@ -77,11 +77,12 @@
 
 /* 콘텐츠 섹션 */
 .content-section {
-    margin-top: 5vh;
+    margin-top: 3vh;
 }
 
+/* clamp (최소, 선호, 최대) */
 .content-section h2 {
-    font-size: 2.5vw;
+    font-size: clamp(1.3rem, 4vw, 1.8rem); /* 글자 크기 반응형 설정 */
     margin-bottom: 10px;
 }
 
@@ -104,13 +105,14 @@
 
 
 .content-item {
-    flex: 0 0 20%; /* 기본적으로 화면에 5개 콘텐츠 */
-    height: 25vh; /* 높이를 뷰포트에 맞게 설정 */
+    flex: 0 0 calc(100% / 5 - 10px); /* 기본적으로 화면에 5개 콘텐츠 */
+    height: 18vh; /* 높이를 뷰포트에 맞게 설정 */
     background-color: #333;
-    border-radius: 8px;
+    border-radius: 5px;
     overflow: hidden;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
     transition: transform 0.3s ease;
+    margin-right: 2px; /* 콘텐츠 간의 간격 */
 }
 
 .content-item:hover {
@@ -161,22 +163,11 @@
         height: 20vh;
     }
 
-    .banner h1 {
-        font-size: 2.5rem;
-    }
-
-    .banner p {
-        font-size: 1.1rem;
-    }
-
     .banner button {
         font-size: 1rem;
         padding: 8px 16px;
     }
 
-    .content-section h2 {
-        font-size: 4vw;
-    }
 }
 
 /* 반응형 디자인 - 모바일 화면 */
@@ -186,20 +177,9 @@
         height: 15vh;
     }
 
-    .banner h1 {
-        font-size: 8vw;
-    }
-
-    .banner p {
-        font-size: 4vw;
-    }
-
     .banner button {
         font-size: 4vw;
         padding: 10px 20px;
     }
 
-    .content-section h2 {
-        font-size: 6vw;
-    }
 }

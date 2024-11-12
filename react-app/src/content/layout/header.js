@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import {Link, useNavigate} from 'react-router-dom';
 import './header.css';
 import routes from "routes.json";
 import { TicketIcon, SearchIcon, BellIcon, UserIcon, BarsIcon, TimesIcon } from 'artifacts/icons';
 
 const Header = () => {
+
+    const navigate = useNavigate();
     const [isScrolled, setIsScrolled] = useState(false);
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
@@ -30,28 +32,33 @@ const Header = () => {
                         <TicketIcon />
                     </Link>
                 </div>
+                &ensp;
                 <nav className="nav-links desktop-nav">
                     <ul>
-                        <li><Link to={routes.home}>홈</Link></li>
                         <li><Link to="/popular">대세 콘텐츠</Link></li>
                         <li><Link to="/wishlist">내가 찜한 리스트</Link></li>
-                        <li><Link to={routes.search}>찾아보기</Link></li>
+                        <li><Link to={routes.search}>카테고리</Link></li>
                     </ul>
                 </nav>
             </div>
             <div className="header-right">
-                <button className="icon-button">
-                    <SearchIcon />
+
+                <button className="icon-button" onClick={() => navigate(routes.search)}>
+                    <SearchIcon/>
                 </button>
-                <button className="icon-button">
-                    <BellIcon />
+
+                <button className="icon-button" onClick={() => navigate('/notifications')}>
+                    <BellIcon/>
                 </button>
-                <button className="icon-button">
-                    <UserIcon />
+
+                <button className="icon-button" onClick={() => navigate('/profile')}>
+                    <UserIcon/>
                 </button>
+
                 <button className="icon-button mobile-menu-button" onClick={toggleMobileMenu}>
-                    <BarsIcon />
+                    <BarsIcon/>
                 </button>
+
             </div>
             {isMobileMenuOpen && (
                 <div className="mobile-nav open">

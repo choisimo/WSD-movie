@@ -1,13 +1,13 @@
 /* src/content/components/Header.css */
 .app-header {
     position: fixed;
-    width: 100%;
+    width: 95%;
     top: 0;
-    z-index: 1000;
+    z-index: 2000;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 10px 20px;
+    padding: 10px 15px;
     background-color: transparent;
     transition: background-color 0.3s ease;
 }
@@ -98,4 +98,39 @@
     .mobile-menu-button {
         display: inline-block;
     }
+}
+
+
+/* 전체 네비게이션 바 설정 */
+.nav-links.desktop-nav ul {
+    display: flex;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.nav-links.desktop-nav li {
+    margin: 0 1px; /* 버튼들 간의 간격 */
+}
+
+.nav-links.desktop-nav a {
+    text-decoration: none; /* 기본 링크 밑줄 제거 */
+    color: #ffffff; /* 글자 색상: 흰색 */
+    padding: 0; /* 버튼 내부 패딩 */
+    font-weight: bold; /* 글씨 굵기 설정 */
+    transition: all 0.3s ease; /* 부드러운 전환 효과 */
+}
+
+/* 버튼에 마우스를 올렸을 때의 효과 */
+.nav-links.desktop-nav a:hover {
+    background-color: rgba(158, 152, 152, 0.42); /* 버튼의 배경 색상 변경 */
+    color: #000000; /* 글자 색상 변경 */
+    transform: translateY(-2px); /* 약간의 상하 이동 효과 */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* 버튼에 그림자 추가 */
+}
+
+/* 활성화된 메뉴 항목 강조 */
+.nav-links.desktop-nav a.active {
+    background-color: #1e90ff; /* 활성화된 버튼의 배경 색상 */
+    color: #ffffff; /* 활성화된 버튼의 글자 색상 */
 }

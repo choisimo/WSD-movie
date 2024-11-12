@@ -1,13 +1,30 @@
-import React, { useRef, useState } from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import { useNavigate } from 'react-router-dom';
 import './SignIn.css';
 import AuthService from "content/views/pages/SignIn/AuthService";
 
 const SignIn = () => {
+
     const navigate = useNavigate();
+
+    useEffect(() => {
+        const checkLoginStatus = async () => {
+            try {
+                const loggedIn = await AuthService.isLoggedIn();
+                if (loggedIn) {
+                    navigate('/');
+                }
+            } catch (error) {
+                console.error('Failed to check login status:', error);
+            }
+        };
+
+        checkLoginStatus();
+    }, [navigate]);
 
     const emailRef = useRef(null);
     const passwordRef = useRef(null);
+
     const registerEmailRef = useRef(null);
     const registerPasswordRef = useRef(null);
     const confirmPasswordRef = useRef(null);
@@ -37,10 +54,7 @@ const SignIn = () => {
         const email = emailRef.current.value;
         const password = passwordRef.current.value;
 
-        if (!email || !password) {
-            setError('모든 필드를 입력하세요');
-            return;
-        }
+        setError('');
 
         try {
             await AuthService.tryLogin(email, password);
@@ -51,31 +65,20 @@ const SignIn = () => {
         }
     };
 
+
     const handleRegister = async (e) => {
         e.preventDefault();
+
+        // 기존 에러 메시지 초기화
+        setError('');
+
         const registerEmail = registerEmailRef.current.value;
         const registerPassword = registerPasswordRef.current.value;
         const confirmPassword = confirmPasswordRef.current.value;
         const acceptTerms = acceptTermsRef.current.checked;
 
-            console.log(registerEmail, registerPassword, confirmPassword, acceptTerms);
-        if (!registerEmail || !registerPassword || !confirmPassword) {
-            setError('모든 필드를 입력하세요');
-            return;
-        }
-
-        if (!acceptTerms){
-            setError('가입 약관에 동의하셔야 합니다.');
-            return;
-        }
-
-        if (registerPassword !== confirmPassword) {
-            setError('확인 비밀번호가 일치하지 않습니다');
-            return;
-        }
-
         try {
-            await AuthService.tryRegister(registerEmail, registerPassword, confirmPassword);
+            await AuthService.tryRegister(registerEmail, registerPassword, confirmPassword, acceptTerms);
             toggleCard();
             setError('');
         } catch (error) {
@@ -151,6 +154,7 @@ const SignIn = () => {
                                     />
                                     <label htmlFor="register-email">Email</label>
                                 </div>
+
                                 <div className="input">
                                     <input
                                         ref={registerPasswordRef}

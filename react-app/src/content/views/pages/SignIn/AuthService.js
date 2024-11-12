@@ -29,11 +29,15 @@ class AuthService {
                 const userExists = users.some(existingUser => existingUser.id === email);
 
                 if (!email || !password || !confirmPassword){
-                    throw new Error('모든 필드는 빈칸이 올 수 없습니다.');
+                    throw new Error('모든 필드를 입력해주세요.');
                 }
 
                 if (userExists) {
                     throw new Error('이미 존재하는 이메일입니다.');
+                }
+
+                if (!acceptTerms) {
+                    throw new Error('약관에 동의해야 가입이 가능합니다.');
                 }
 
                 if (password !== confirmPassword)
@@ -47,6 +51,17 @@ class AuthService {
                 resolve();
             } catch (err) {
                 reject(err);
+            }
+        });
+    }
+
+    isLoggedIn(){
+        return new Promise((resolve, reject) => {
+            const token = localStorage.getItem('TMDb-Key');
+            if (token) {
+                resolve(true);
+            } else {
+                resolve(false);
             }
         });
     }
