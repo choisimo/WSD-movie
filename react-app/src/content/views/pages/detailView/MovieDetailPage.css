@@ -1,9 +1,13 @@
 /* MovieDetailPage.css */
 
 .movie-detail {
+    display: flex;
+    flex-direction: column;
     color: #fff;
     background-color: #141414;
     padding: 20px;
+    max-width: 1600px;
+    margin:auto;
 }
 
 .movie-banner {

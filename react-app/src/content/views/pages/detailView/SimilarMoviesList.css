@@ -1,0 +1,70 @@
+/* SimilarMoviesList.css */
+.similar-movies {
+    padding: 20px;
+    background-color: #222;
+    color: #fff;
+    border-radius: 8px;
+    margin-top: 20px;
+}
+
+.similar-movie-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
+}
+
+.similar-movie {
+    width: 150px;
+    cursor: pointer;
+    text-align: center;
+    transition: transform 0.2s;
+}
+
+.similar-movie img {
+    width: 100%;
+    border-radius: 8px;
+    transition: opacity 0.2s;
+}
+
+.similar-movie p {
+    margin-top: 8px;
+    font-size: 0.9rem;
+    color: #ccc;
+}
+
+.similar-movie:hover {
+    transform: scale(1.05);
+}
+
+.similar-movie:hover img {
+    opacity: 0.9;
+}
+
+.pagination-controls {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+    gap: 10px;
+}
+
+.pagination-controls button {
+    background-color: #555;
+    color: #fff;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.pagination-controls button:disabled {
+    background-color: #333;
+    cursor: not-allowed;
+}
+
+.pagination-controls span {
+    display: inline-block;
+    padding: 8px 12px;
+    color: #aaa;
+}

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Navigate } from 'react-router-dom';
 import 'content/components/security/projectionRouter.css';
 
-const ProtectionRouter = ({ prop }) => {
+const ProtectionRouter = ({ children }) => {
     const [isAuthenticated, setIsAuthenticated] = useState(localStorage.getItem('TMDb-Key') != null);
     const [showWarn, setShowWarn] = useState(false);
     const [redirect, setRedirect] = useState(false);
@@ -29,7 +29,7 @@ const ProtectionRouter = ({ prop }) => {
                     로그인이 필요한 페이지 입니다.
                 </div>
             )}
-            {isAuthenticated && prop}
+            {isAuthenticated && children}
         </>
     );
 };

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { getDetailMovie } from 'api/tmdbApi';
 import './MovieDetailPage.css';
-
+import SimilarMoviesList from "content/views/pages/detailView/SimilarMovieList";
 
 const MovieDetailPage = () => {
     const { id } = useParams();
@@ -69,6 +69,7 @@ const MovieDetailPage = () => {
                     ></iframe>
                 </div>
             )}
+            {movie.genres && <SimilarMoviesList genreIds={movie.genres.map((genre) => genre.id)} />}
         </div>
     );
 };
