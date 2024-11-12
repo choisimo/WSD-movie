@@ -20,13 +20,18 @@ export const getMovies = async (type) => {
     }
 };
 
+/*
 // 영화 세부 정보를 불러오는 함수
 export const getDetailMovie = async (movieId) => {
     try {
-        console.log('API Key:', process.env.REACT_APP_TMDB_API_KEY); // API 키 확인용 로그
         const response = await api.get(`/movie/${movieId}`, {
             params: {
-                append_to_response: 'videos,images' // 추가 데이터 요청
+                api_key: process.env.REACT_APP_TMDB_API_KEY,
+                language: 'ko-KR',
+                append_to_response: 'videos,images'
+            },
+            headers: {
+                'Content-Type': 'application/json'
             }
         });
         console.log('영화 세부 정보:', response.data);
@@ -36,6 +41,23 @@ export const getDetailMovie = async (movieId) => {
         return null;
     }
 };
+*/
 
 
+// 영화 세부 정보를 불러오는 함수
+export const getDetailMovie = async (movieId) => {
+    try {
+        const apiKey = process.env.REACT_APP_TMDB_API_KEY;
+        const response = await axios.get(`https://api.themoviedb.org/3/movie/${movieId}?api_key=${apiKey}&language=ko-KR&append_to_response=videos,images`, {
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        });
+        console.log('영화 세부 정보:', response.data);
+        return response.data;
+    } catch (error) {
+        console.error('TMDB Detail API Error:', error);
+        return null;
+    }
+};
 

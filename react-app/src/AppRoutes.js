@@ -22,8 +22,8 @@ const AppRoutes = () => {
                     </ProtectedRoute>
                 }
             />
-
-            <Route path={routes.movie} element={
+            {/* 영화 상세 페이지 */}
+            <Route path={routes.movieInfo} element={
                 <ProtectedRoute>
                     <MovieDetailPage />
                 </ProtectedRoute>

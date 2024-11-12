@@ -6,18 +6,35 @@ import './MovieDetailPage.css';
 
 const MovieDetailPage = () => {
     const { id } = useParams();
+    console.log('Movie ID:', id);
     const [movie, setMovie] = useState(null);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
+
 
     useEffect(() => {
         const fetchMovie = async () => {
-            const detail = await getDetailMovie(id);
-            console.log('Fetched movie detail:', detail); // 이곳에서 로그 확인
-            setMovie(detail);
+            try {
+                setLoading(true);
+                const detail = await getDetailMovie(id);
+                console.log('Fetched movie detail:', detail); // 로그 확인
+                if (detail) {
+                    setMovie(detail);
+                } else {
+                    setError('영화를 찾을 수 없습니다.');
+                }
+            } catch (error) {
+                console.error('Error fetching movie:', error);
+                setError('영화 정보를 불러오는 중 오류가 발생했습니다.');
+            } finally {
+                setLoading(false);
+            }
         };
         fetchMovie();
     }, [id]);
 
-    if (!movie) return <p>Loading...</p>;
+    if (loading) return <p>Loading...</p>;
+    if (error) return <p>{error}</p>;
 
     return (
         <div className="movie-detail">

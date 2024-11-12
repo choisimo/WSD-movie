@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { getMovies } from 'api/tmdbApi';
 import './home.css';
 import { useNavigate } from 'react-router-dom';
+import routes from 'routes.json';
 
 const HomePage = () => {
     const navigate = useNavigate();
@@ -65,7 +66,8 @@ const HomePage = () => {
 
 
     const handleMovieClick = (movieId) => {
-        navigate(`/movie/${movieId}`);
+        const path = routes.movieInfo.replace(':id', movieId);
+        navigate(path);
     };
 
     return (
@@ -149,6 +151,28 @@ const ContentRow = ({ movies, onMovieClick, category, loadMoreMovies }) => {
         rowRef.current.scrollLeft = scrollLeft.current + moveDistance; // 스크롤 위치 변경
     }
 
+    const renderStarRating = (voteAverage) => {
+        // 평점을 5점 만점으로 환산
+        const rating = voteAverage / 2;
+
+        // 별 개수를 담을 배열
+        const stars = [];
+
+        // 5개의 별 중 채워진 별과 반별을 계산
+        for (let i = 1; i <= 5; i++) {
+            if (i <= rating) {
+                stars.push(<span key={i} className="full-star">★</span>);  // 채워진 별
+            } else if (i - 0.5 <= rating) {
+                stars.push(<span key={i} className="half-star">★</span>);  // 반별
+            } else {
+                stars.push(<span key={i} className="empty-star">☆</span>); // 빈 별
+            }
+        }
+
+        return stars;
+    };
+
+
     useEffect(() => {
         const rowElement = rowRef.current;
         rowElement.addEventListener('scroll', handleScroll);
@@ -157,6 +181,7 @@ const ContentRow = ({ movies, onMovieClick, category, loadMoreMovies }) => {
             stopScroll(); // 컴포넌트가 언마운트될 때 스크롤 중지
         };
     }, []);
+
 
     return (
         <div className="content-row-container">
@@ -175,8 +200,16 @@ const ContentRow = ({ movies, onMovieClick, category, loadMoreMovies }) => {
             >
                 {movies.map((movie) => (
                     <div key={movie.id} className="content-item" onClick={() => onMovieClick(movie.id)}>
-                        <img src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`} alt={movie.title} />
-                        <p>{movie.title}</p>
+                        <img src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`} alt={movie.title}/>
+                        <p className="movie-title">{movie.title}</p>
+                        <div className="movie-info-hover">
+                            <div className="star-rating">
+                                {renderStarRating(movie.vote_average)}
+                            </div>
+                            <p><strong>개봉일:</strong> {movie.release_date}</p>
+                            {movie.genres &&
+                                <p><strong>장르:</strong> {movie.genres.map(genre => genre.name).join(', ')}</p>}
+                        </div>
                     </div>
                 ))}
             </div>
@@ -191,7 +224,6 @@ const ContentRow = ({ movies, onMovieClick, category, loadMoreMovies }) => {
         </div>
     );
 };
-
 
 
 export default HomePage;

@@ -4,5 +4,5 @@
   "SignIn": "/user/signin",
   "dashboard": "/page/dashboard",
   "search": "/search",
-  "movie": "/movie/:id"
+  "movieInfo": "/movie/detail/:id"
 }
