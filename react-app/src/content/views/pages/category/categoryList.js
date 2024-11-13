@@ -3,6 +3,8 @@ import {Link, useNavigate, useParams} from 'react-router-dom';
 import {getGenreMovieList, getMovies} from 'api/tmdbApi';
 import './categoryList.css';
 import route from 'routes.json';
+import BookmarkButton from "content/views/pages/bookMark/myWishLists";
+import { getLikedMovies, toggleLikeMovie } from "content/components/utility/bookMark/likeMovies";
 
 const CategoryList = () => {
     const navigate = useNavigate();
@@ -13,6 +15,8 @@ const CategoryList = () => {
     const [page, setPage] = useState(1);
     const [totalPages, setTotalPages] = useState(1);
     const [loading, setLoading] = useState(true);
+    const [likedMovies, setLikedMovies] = useState(getLikedMovies || []);
+
 
     const categoryName = (category) => {
         if (category === 'popular') return '인기 영화';
