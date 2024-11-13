@@ -52,22 +52,44 @@
     margin-bottom: 10px;
 }
 
-
 .movie-info {
-    font-size: 1rem;
-    color: #ccc;
-    margin-top: 10px;
+    font-size: 1.1rem;
+    color: #ffd700;
+    line-height: 1.6;
+    margin-top: 15px;
+    padding: 10px;
+    background-color: rgba(0, 0, 0, 0.5);
+    border-radius: 8px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.movie-info strong {
+    color: #fff;
+    font-weight: bold;
+    display: inline-block;
+    margin-right: 5px;
 }
 
 .genre-link {
-    color: rgba(9, 203, 229, 0.54);
-    cursor: pointer;
-    margin-left: 5px;
-    text-decoration: underline;
+    display: inline-block;
+    margin-right: 8px;
+    padding: 4px 10px;
+    background-color: #333;
+    color: #ffd700;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    transition: all 0.3s ease-in-out; /* 애니메이션 */
+    transform: scale(1);
 }
+
 .genre-link:hover {
     text-decoration: none;
+    background-color: #444;
+    color: #fff;
+    transform: scale(1.1); /* 호버 시 약간 확대 */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* 호버 시 그림자 추가 */
 }
+
 
 .movie-content {
     max-width: 1000px;

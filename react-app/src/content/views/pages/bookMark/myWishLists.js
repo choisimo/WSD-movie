@@ -2,7 +2,7 @@ import React, { useEffect, useState, useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import { getDetailMovie } from 'api/tmdbApi';
 import route from 'routes.json';
-import './categoryList.css';
+import './myWishListLayout.css';
 import './myWishLists.css'
 
 const MyWishLists = () => {
