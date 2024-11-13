@@ -8,6 +8,8 @@ import ProtectionRouter from 'content/components/security/protectionRouter';
 import MovieDetailPage from 'content/views/pages/detailView/MovieDetailPage';
 import NotFound from 'content/views/pages/error/404'; // 404 페이지 컴포넌트
 import LoadingSpinner from "content/components/utility/LoadingSpinner";
+import CategoryList from "content/views/pages/category/categoryList";
+import MyWishLists from "content/views/pages/bookMark/myWishLists";
 
 const AppRoutes = () => {
 
@@ -51,6 +53,26 @@ const AppRoutes = () => {
                     </ProtectionRouter>
                 }
             />
+
+            <Route
+                path={routes.categoryList}
+                element={
+                    <ProtectionRouter>
+                        <CategoryList />
+                    </ProtectionRouter>
+                }
+            />
+
+            <Route
+                path={routes.wishList}
+                element={
+                    <ProtectionRouter>
+                        <MyWishLists />
+                    </ProtectionRouter>
+                }
+            />
+
+
 
             {/* 잘못된 경로는 404 페이지로 리다이렉트 */}
             <Route path="*" element={<NotFound />} />

@@ -19,31 +19,42 @@
 }
 
 .banner-content {
-    max-width: 800px;
-    padding: 20px;
+    padding: 12%;
     background: rgba(0, 0, 0, 0.6);
     border-radius: 10px;
-    text-align: center;
+    width: auto;
+    height:100%;
+
 }
 
 .banner h1 {
     font-size: 2.5rem;
     margin-bottom: 10px;
+    max-width: 80%;
+    margin-left: 10%;
 }
 
 .banner p {
     font-size: 1.2rem;
     margin-bottom: 20px;
+    max-width: 80%;
+    margin-left: 10%;
 }
 
 .banner button {
-    background-color: #E50914;
+    background-color: rgba(220, 13, 13, 0.75);
     color: white;
     border: none;
     padding: 10px 20px;
     font-size: 1rem;
     cursor: pointer;
     border-radius: 5px;
+    max-width: 80%;
+    margin-left: 10%;
+}
+
+.banner button:hover{
+    background-color: #ed010f;
 }
 
 .content-section {
@@ -66,9 +77,10 @@
 .content-row {
     display: flex;
     gap: 10px;
-    overflow-x: scroll;
+    overflow-x: auto;
     padding: 10px 0;
     scroll-behavior: smooth;
+    scroll-snap-type: x mandatory;
 }
 
 .content-row::-webkit-scrollbar {
@@ -135,6 +147,7 @@
 
 .star-rating {
     display: flex;
+    align-items: center;
     gap: 5px;
     font-size: 1rem;
     color: #FFD700; /* Gold color for stars */
@@ -149,6 +162,14 @@
 .empty-star {
     color: #ccc;
 }
+.rating-text {
+     color: #ffd700;
+     font-size: 0.9rem;
+     font-weight: bold;
+     margin-left: 5px;
+ }
+
+
 
 .movie-info-hover {
     position: absolute;
@@ -169,6 +190,28 @@
 }
 
 
+.section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.view-all-button {
+    background-color: transparent;
+    border: none;
+    color: #e50914;
+    font-weight: bold;
+    cursor: pointer;
+    font-size: 1rem;
+    text-decoration: none;
+    padding: 0 0;
+    width: auto;
+}
+
+.view-all-button:hover {
+    color: #f12a34;
+}
+
+
 @media (max-width: 768px) {
     .banner {
         height: 50vh;
@@ -185,4 +228,25 @@
     .content-item {
         min-width: 120px;
     }
+}
+
+/* 북마크 관련 */
+.bookmark-icon {
+    position: absolute;
+    top: 0;
+    right: 10px; /* 포스터 오른쪽에서 10px 왼쪽 */
+    width: 24px; /* 아이콘 크기 */
+    height: 24px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    z-index: 10;
+    transition: transform 0.2s ease;
+    filter: drop-shadow(0 0 4px rgba(0, 0, 0, 0.8));
+
+}
+
+.bookmark-icon:hover {
+    transform: scale(1.1); /* 호버 시 크기 살짝 확대 */
 }

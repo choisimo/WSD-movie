@@ -13,13 +13,29 @@ const api = axios.create({
 export const getMovies = async (type) => {
     try {
         const response = await api.get(`/movie/${type}`);
-        console.log(response);
         return response.data.results;
     } catch (error) {
         console.error('TMDB API Error:', error);
         return [];
     }
 };
+
+export const getGenreMovieList = async (type, page = 1) => {
+    try{
+        const response = await api.get(`/movie/${type}`, {
+            params: {
+                api_key: process.env.REACT_APP_TMDB_API_KEY,
+                language: 'ko-KR',
+                page: page
+            }
+        });
+        console.log('current page is ', page);
+        return response.data;
+    } catch (error) {
+        console.error('TMDB API Error:', error);
+        return {results: [], total_pages: 1}
+    }
+}
 
 // 영화 세부 정보를 불러오는 함수
 export const getDetailMovie = async (movieId) => {

@@ -4,5 +4,7 @@
   "SignIn": "/user/signin",
   "dashboard": "/page/dashboard",
   "search": "/search",
-  "movieInfo": "/movie/detail/:id"
+  "movieInfo": "/movie/detail/:id",
+  "categoryList": "/category/:category",
+  "wishList": "/wishlist"
 }

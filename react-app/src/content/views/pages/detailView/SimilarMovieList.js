@@ -76,7 +76,10 @@ const SimilarMoviesList = ({ genreIds }) => {
             <button className="show-all-btn" onClick={toggleShowExpand}>
                 {showExpand ? '간략히 보기' : '전체 보기'}
             </button>
-            {loading && <p>Loading...</p>}
+            {loading &&
+                (<div className="loading-overlay">
+                    <div className="spinner-for-loading"></div>
+                </div>)}
         </div>
     );
 };

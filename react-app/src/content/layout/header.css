@@ -1,14 +1,18 @@
 /* src/content/components/Header.css */
 .app-header {
     position: fixed;
-    width: 95%;
+    width: 100%;
     top: 0;
     z-index: 2000;
     display: flex;
     justify-content: space-between;
     align-items: center;
-
     transition: background-color 0.3s ease;
+    background-color: transparent;
+}
+
+.app-header.scrolled {
+    background-color: rgba(20, 20, 20, 0.7);
 }
 
 .header-left, .header-right {

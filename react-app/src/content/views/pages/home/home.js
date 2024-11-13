@@ -3,6 +3,8 @@ import { getMovies } from 'api/tmdbApi';
 import './home.css';
 import { useNavigate } from 'react-router-dom';
 import routes from 'routes.json';
+import BookmarkButton from 'content/components/utility/bookMark/bookMarkButton';
+import { getLikedMovies, toggleLikeMovie } from 'content/components/utility/bookMark/likeMovies'; // Add this line
 
 const HomePage = () => {
     const navigate = useNavigate();
@@ -10,12 +12,14 @@ const HomePage = () => {
     const [pageMap, setPageMap] = useState({});
     const [featuredMovie, setFeaturedMovie] = useState([]);
     const [currentBannerIndex, setCurrentBannerIndex] = useState(0);
+    const [likedMovies, setLikedMovies] = useState(getLikedMovies() || []);
+
 
     const sections = [
-        { title: '최신 컨텐츠', category: 'now_playing' },
-        { title: '인기 컨텐츠', category: 'popular' },
-        { title: '최고 평점 컨텐츠', category: 'top_rated' },
-        { title: '내가 찜한 컨텐츠', category: 'upcoming' }
+        {title: '최신 컨텐츠', category: 'now_playing'},
+        {title: '인기 컨텐츠', category: 'popular'},
+        {title: '최고 평점 컨텐츠', category: 'top_rated'},
+        {title: '내가 찜한 컨텐츠', category: 'upcoming'}
     ];
 
     // 무한 스크롤을 위해 페이지별 데이터를 불러오는 함수
@@ -26,11 +30,11 @@ const HomePage = () => {
         setMovies((prevMovies) =>
             prevMovies.map((section) =>
                 section.category === category
-                    ? { ...section, movies: [...section.movies, ...newMovies] }
+                    ? {...section, movies: [...section.movies, ...newMovies]}
                     : section
             )
         );
-        setPageMap((prevPageMap) => ({ ...prevPageMap, [category]: nextPage }));
+        setPageMap((prevPageMap) => ({...prevPageMap, [category]: nextPage}));
     };
 
     useEffect(() => {
@@ -43,7 +47,7 @@ const HomePage = () => {
                 }))
             );
             setMovies(initialMovies);
-            setPageMap(sections.reduce((acc, section) => ({ ...acc, [section.category]: 1 }), {}));
+            setPageMap(sections.reduce((acc, section) => ({...acc, [section.category]: 1}), {}));
 
             // Featured 영화 배열 설정
             if (initialMovies.length > 0 && initialMovies[0].movies.length > 0) {
@@ -70,12 +74,16 @@ const HomePage = () => {
         navigate(path);
     };
 
+    const handleViewAllClick = (category) => {
+        navigate(`/category/${category}`);
+    };
+
     return (
         <div className="home">
             {featuredMovie.length > 0 && (
                 <div
                     className="banner"
-                    style={{ backgroundImage: `url(https://image.tmdb.org/t/p/w1280${featuredMovie[currentBannerIndex].backdrop_path})` }}
+                    style={{backgroundImage: `url(https://image.tmdb.org/t/p/w1280${featuredMovie[currentBannerIndex].backdrop_path})`}}
                 >
                     <div className="banner-content">
                         <h1>{featuredMovie[currentBannerIndex].title}</h1>
@@ -87,12 +95,18 @@ const HomePage = () => {
 
             {movies.map((section, idx) => (
                 <div key={idx} className="content-section">
-                    <h2>{section.title}</h2>
+                    <div className="section-header">
+                        <h2>{section.title}</h2>
+                        <button className="view-all-button" onClick={() => handleViewAllClick(section.category)}>전체 보기
+                        </button>
+                    </div>
                     <ContentRow
                         movies={section.movies}
                         onMovieClick={handleMovieClick}
                         category={section.category}
                         loadMoreMovies={loadMoreMovies} // loadMoreMovies 함수 전달
+                        likedMovies={likedMovies} // likedMovies 전달 추가
+                        setLikedMovies={setLikedMovies}
                     />
                 </div>
             ))}
@@ -101,7 +115,7 @@ const HomePage = () => {
 };
 
 
-const ContentRow = ({ movies, onMovieClick, category, loadMoreMovies }) => {
+const ContentRow = ({ movies, onMovieClick, category, loadMoreMovies, likedMovies, setLikedMovies }) => {
     const rowRef = useRef(null);
     const scrollInterval = useRef(null); // Scroll interval reference
     const touchStartX = useRef(0); // Touch start position
@@ -201,7 +215,13 @@ const ContentRow = ({ movies, onMovieClick, category, loadMoreMovies }) => {
                 {movies.map((movie) => (
                     <div key={movie.id} className="content-item" onClick={() => onMovieClick(movie.id)}>
                         <img src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`} alt={movie.title}/>
+                        <BookmarkButton
+                            movieId={movie.id}
+                            likedMovies={likedMovies}
+                            onToggle={setLikedMovies}
+                        />
                         <div className="movie-info-hover">
+                            <p className={"movie-title"}>평점: {movie.vote_average}</p>
                             <div className="star-rating">
                                 {renderStarRating(movie.vote_average)}
                             </div>
