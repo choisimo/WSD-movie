@@ -3,8 +3,8 @@ import { getMovies } from 'api/tmdbApi';
 import './home.css';
 import { useNavigate } from 'react-router-dom';
 import routes from 'routes.json';
-import BookmarkButton from 'content/components/utility/bookMark/bookMarkButton';
-import { getLikedMovies, toggleLikeMovie } from 'content/components/utility/bookMark/likeMovies'; // Add this line
+import { getLikedMovies, toggleLikeMovie } from 'content/components/utility/bookMark/likeMovies'; // 유틸리티 함수 불러오기
+import MovieCard from "content/views/pages/movieCardView/MovieCard";
 
 const HomePage = () => {
     const navigate = useNavigate();
@@ -130,7 +130,6 @@ const ContentRow = ({ movies, onMovieClick, category, loadMoreMovies, likedMovie
         }, 1);
     };
 
-    // 오른쪽으로 스크롤
     const startScrollRight = () => {
         stopScroll(); // 기존 스크롤 중지
         scrollInterval.current = setInterval(() => {
@@ -140,7 +139,6 @@ const ContentRow = ({ movies, onMovieClick, category, loadMoreMovies, likedMovie
         }, 1);
     };
 
-    // 스크롤 멈춤
     const stopScroll = () => {
         if (scrollInterval.current) {
             clearInterval(scrollInterval.current);
@@ -155,7 +153,7 @@ const ContentRow = ({ movies, onMovieClick, category, loadMoreMovies, likedMovie
     };
 
     const handleTouchStart = (e) => {
-        touchStartX.current =  e.touches[0].clientX;    // 터치 시작 위치 저장
+        touchStartX.current = e.touches[0].clientX; // 터치 시작 위치 저장
         scrollLeft.current = rowRef.current.scrollLeft; // 현재 스크롤 위치 저장
     };
 
@@ -163,29 +161,12 @@ const ContentRow = ({ movies, onMovieClick, category, loadMoreMovies, likedMovie
         const touchX = e.touches[0].clientX;
         const moveDistance = touchStartX.current - touchX; // 터치 이동 거리 계산
         rowRef.current.scrollLeft = scrollLeft.current + moveDistance; // 스크롤 위치 변경
-    }
-
-    const renderStarRating = (voteAverage) => {
-        // 평점을 5점 만점으로 환산
-        const rating = voteAverage / 2;
-
-        // 별 개수를 담을 배열
-        const stars = [];
-
-        // 5개의 별 중 채워진 별과 반별을 계산
-        for (let i = 1; i <= 5; i++) {
-            if (i <= rating) {
-                stars.push(<span key={i} className="full-star">★</span>);  // 채워진 별
-            } else if (i - 0.5 <= rating) {
-                stars.push(<span key={i} className="half-star">★</span>);  // 반별
-            } else {
-                stars.push(<span key={i} className="empty-star">☆</span>); // 빈 별
-            }
-        }
-
-        return stars;
     };
 
+    const handleToggleRecommend = (movie) => {
+        const updatedMovies = toggleLikeMovie(movie); // toggleLikeMovie를 사용하여 로컬 스토리지 업데이트
+        setLikedMovies(updatedMovies); // 상태를 최신화
+    };
 
     useEffect(() => {
         const rowElement = rowRef.current;
@@ -195,7 +176,6 @@ const ContentRow = ({ movies, onMovieClick, category, loadMoreMovies, likedMovie
             stopScroll(); // 컴포넌트가 언마운트될 때 스크롤 중지
         };
     }, []);
-
 
     return (
         <div className="content-row-container">
@@ -207,28 +187,20 @@ const ContentRow = ({ movies, onMovieClick, category, loadMoreMovies, likedMovie
             >
                 {"<"}
             </button>
-            <div className="content-row"
-                 ref={rowRef}
-                 onTouchStart={handleTouchStart}
-                 onTouchMove={handleTouchMove}
+            <div
+                className="content-row"
+                ref={rowRef}
+                onTouchStart={handleTouchStart}
+                onTouchMove={handleTouchMove}
             >
                 {movies.map((movie) => (
-                    <div key={movie.id} className="content-item" onClick={() => onMovieClick(movie.id)}>
-                        <img src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`} alt={movie.title}/>
-                        <BookmarkButton
-                            movieId={movie.id}
-                            likedMovies={likedMovies}
-                            onToggle={setLikedMovies}
-                        />
-                        <div className="movie-info-hover">
-                            <p className={"movie-title"}>평점: {movie.vote_average}</p>
-                            <div className="star-rating">
-                                {renderStarRating(movie.vote_average)}
-                            </div>
-                            <p><strong>개봉일:</strong> {movie.release_date}</p>
-                        </div>
-                        <p className="movie-title">{movie.title}</p>
-                    </div>
+                    <MovieCard
+                        key={movie.id}
+                        movie={movie}
+                        likedMovies={likedMovies}
+                        onMovieClick={onMovieClick}
+                        onToggleRecommend={handleToggleRecommend}
+                    />
                 ))}
             </div>
             <button
@@ -242,5 +214,6 @@ const ContentRow = ({ movies, onMovieClick, category, loadMoreMovies, likedMovie
         </div>
     );
 };
+
 
 export default HomePage;

@@ -146,7 +146,6 @@
     .overlay {
         padding: 10%; /* 모바일에서 적절한 패딩 설정 */
         align-items: center; /* 텍스트 중앙 정렬 */
-        text-align: center;
     }
 
     .content h1 {
@@ -173,6 +172,5 @@
     .movie-videos,
     .movie-info {
         width: 100%;
-        text-align: center;
     }
 }

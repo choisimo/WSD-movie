@@ -1,10 +1,16 @@
 {
   "home": "/",
   "setting": "/user/setting",
-  "SignIn": "/user/signin",
+  "SignIn": "/signin",
   "dashboard": "/page/dashboard",
   "search": "/search",
   "movieInfo": "/movie/detail/:id",
   "categoryList": "/category/:category",
-  "wishList": "/wishlist"
+  "wishList": "/wishlist",
+  "category/popular": "/popular",
+  "category/top_rated": "/top_rated",
+  "category/upcoming": "/upcoming",
+  "category/now_playing": "/now_playing",
+  "category/trending": "/trending",
+  "category/genre/:id": "/genre/:id"
 }

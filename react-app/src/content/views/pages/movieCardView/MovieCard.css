@@ -1,0 +1,85 @@
+.movie-card {
+    position: relative;
+    min-width: 180px;
+    max-width: 180px;
+    flex: 0 0 auto;
+    cursor: pointer;
+    text-align: center;
+    overflow: hidden;
+    border-radius: 8px;
+    transition: transform 0.2s;
+}
+
+.movie-card:hover .movie-info-hover {
+    opacity: 1;
+}
+
+.movie-card img {
+    width: 100%;
+    border-radius: 8px;
+    transition: transform 0.2s;
+}
+
+.movie-card:hover img {
+    transform: scale(1.05);
+}
+
+.movie-title {
+    margin-top: 5px;
+    color: #ccc;
+    font-size: 0.9rem;
+}
+
+.movie-info-hover {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    border-radius: 8px;
+    pointer-events: none;
+}
+
+.bookmark-icon {
+    position: absolute;
+    right: 10px;
+    width: 24px;
+    height: 24px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    z-index: 10;
+    transition: transform 0.2s ease;
+    filter: drop-shadow(0 0 4px rgba(0, 0, 0, 0.8));
+}
+
+.bookmark-icon:hover {
+    transform: scale(1.1);
+}
+
+.star-rating {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 1rem;
+    color: #FFD700;
+    margin-bottom: 10px;
+}
+
+.full-star,
+.half-star {
+    color: #FFD700;
+}
+
+.empty-star {
+    color: #ccc;
+}

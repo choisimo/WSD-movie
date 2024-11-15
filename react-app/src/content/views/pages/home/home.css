@@ -229,24 +229,3 @@
         min-width: 120px;
     }
 }
-
-/* 북마크 관련 */
-.bookmark-icon {
-    position: absolute;
-    top: 0;
-    right: 10px; /* 포스터 오른쪽에서 10px 왼쪽 */
-    width: 24px; /* 아이콘 크기 */
-    height: 24px;
-    background: none;
-    border: none;
-    cursor: pointer;
-    padding: 0;
-    z-index: 10;
-    transition: transform 0.2s ease;
-    filter: drop-shadow(0 0 4px rgba(0, 0, 0, 0.8));
-
-}
-
-.bookmark-icon:hover {
-    transform: scale(1.1); /* 호버 시 크기 살짝 확대 */
-}

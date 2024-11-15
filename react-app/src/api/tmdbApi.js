@@ -70,6 +70,34 @@ export const getSimilarMovies = async (genreIds, page = 1) => {
     return response.data; // 전체 데이터를 반환
 };
 
+export const searchMovies = async ({ query, page = 1, genre, rating, sort, year }) => {
+    const params = {
+        page,
+        sort_by: sort,
+        with_genres: genre,
+        'vote_average.gte': rating,
+        primary_release_year: year,
+    };
+
+    const endpoint = query ? `/search/movie` : `/discover/movie`; // 키워드가 없을 경우 discover 사용
+
+    if (query) {
+        params.query = query;
+    }
+
+    const response = await api.get(endpoint, { params });
+    return response.data;
+};
 
 
+export const getGenreMovieList = async (genreId, page = 1) => {
+    const response = await api.get(`/discover/movie`, {
+        params: {
+            api_key: process.env.REACT_APP_TMDB_API_KEY,
+            with_genres: genreId,
+            page,
+        },
+    });
+    return response.data;
+};
 

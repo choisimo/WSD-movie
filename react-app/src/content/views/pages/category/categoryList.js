@@ -6,11 +6,12 @@ import route from 'routes.json';
 import BookmarkButton from "content/views/pages/bookMark/myWishLists";
 import { getLikedMovies, toggleLikeMovie } from "content/components/utility/bookMark/likeMovies";
 
-const CategoryList = () => {
-    const navigate = useNavigate();
-    const { category } = useParams();
+const CategoryList = ({ category: propCategory }) => {
+    const { category: paramCategory } = useParams();
+    const category = propCategory || paramCategory;
+
     const useCallback = require('react').useCallback;
-    console.log(category);
+
     const [movies, setMovies] = useState([]);
     const [page, setPage] = useState(1);
     const [totalPages, setTotalPages] = useState(1);

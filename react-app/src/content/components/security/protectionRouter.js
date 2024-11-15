@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Navigate } from 'react-router-dom';
 import 'content/components/security/projectionRouter.css';
+import route from 'routes';
 
 const ProtectionRouter = ({ children }) => {
     const [isAuthenticated, setIsAuthenticated] = useState(localStorage.getItem('TMDb-Key') != null);
@@ -18,7 +19,7 @@ const ProtectionRouter = ({ children }) => {
     }, [isAuthenticated]);
 
     if (redirect) {
-        return <Navigate to="/user/signin" />;
+        return <Navigate to={ route.SignIn } />;
     }
 
     return (

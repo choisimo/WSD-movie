@@ -2,6 +2,8 @@ import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { getSimilarMovies } from 'api/tmdbApi';
 import './SimilarMoviesList.css';
 import { useNavigate } from "react-router-dom";
+import MovieCard from 'content/views/pages/movieCardView/MovieCard';
+import { getLikedMovies, toggleLikeMovie } from 'content/components/utility/bookMark/likeMovies';
 
 const SimilarMoviesList = ({ genreIds }) => {
     const [similarMovies, setSimilarMovies] = useState([]);
@@ -10,8 +12,10 @@ const SimilarMoviesList = ({ genreIds }) => {
     const observer = useRef();
     const [totalPages, setTotalPages] = useState(1);
     const [showExpand, setShowExpand] = useState(false);
+    const [likedMovies, setLikedMovies] = useState([]);
     const navigate = useNavigate();
 
+    // 마지막 요소를 관찰하여 페이지를 증가시키는 IntersectionObserver
     const lastMovieElementRef = useCallback((node) => {
         if (loading) return;
         if (observer.current) observer.current.disconnect();
@@ -25,6 +29,7 @@ const SimilarMoviesList = ({ genreIds }) => {
         if (node) observer.current.observe(node);
     }, [loading, page, totalPages]);
 
+    // 비슷한 영화 데이터를 가져오는 useEffect
     useEffect(() => {
         const fetchMovies = async () => {
             setLoading(true);
@@ -54,32 +59,35 @@ const SimilarMoviesList = ({ genreIds }) => {
         setShowExpand((prevShowExpand) => !prevShowExpand);
     };
 
+    const handleToggleRecommend = (movie) => {
+        const updatedMovies = toggleLikeMovie(movie); // toggleLikeMovie를 사용
+        setLikedMovies(updatedMovies); // 상태를 업데이트
+    };
+
+
     return (
         <div className="similar-movies-container">
             <h3>비슷한 영화 추천</h3>
             <div className={`similar-movies-list ${showExpand ? 'expanded' : ''}`}>
                 {similarMovies.map((movie, index) => (
-                    <div
+                    <MovieCard
                         key={movie.id}
-                        className="similar-movie"
-                        onClick={() => handleMovieClick(movie.id)}
+                        movie={movie}
+                        likedMovies={likedMovies}
+                        onMovieClick={handleMovieClick}
+                        onToggleRecommend={handleToggleRecommend}
                         ref={index === similarMovies.length - 1 ? lastMovieElementRef : null}
-                    >
-                        <img
-                            src={`https://image.tmdb.org/t/p/w200${movie.poster_path}`}
-                            alt={movie.title}
-                        />
-                        <p>{movie.title}</p>
-                    </div>
+                    />
                 ))}
             </div>
             <button className="show-all-btn" onClick={toggleShowExpand}>
                 {showExpand ? '간략히 보기' : '전체 보기'}
             </button>
-            {loading &&
-                (<div className="loading-overlay">
+            {loading && (
+                <div className="loading-overlay">
                     <div className="spinner-for-loading"></div>
-                </div>)}
+                </div>
+            )}
         </div>
     );
 };
