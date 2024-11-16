@@ -1,9 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import BookmarkButton from 'content/components/utility/bookMark/bookMarkButton';
 import './MovieCard.css';
+import {useNavigate} from "react-router-dom";
+import route from "routes";
+import movieDetailPage from "content/views/pages/detailView/MovieDetailPage";
 
-const MovieCard = ({ movie, likedMovies, onMovieClick, onToggleRecommend }) => {
+const MovieCard = ({ movie, likedMovies, onMovieClick = () => {}, onToggleRecommend }) => {
     const [isLiked, setIsLiked] = useState(likedMovies.some((m) => m.id === movie.id));
+    const navigate = useNavigate();
 
     useEffect(() => {
         setIsLiked(likedMovies.some((m) => m.id === movie.id));
@@ -14,6 +18,14 @@ const MovieCard = ({ movie, likedMovies, onMovieClick, onToggleRecommend }) => {
         setIsLiked(!isLiked);
     };
 
+    const handleCardClick = () => {
+        if (route.movieInfo) {
+            const movieDetailPath = route.movieInfo.replace(':id', movie.id);
+            navigate(movieDetailPath); // 경로 이동
+        } else {
+            console.error('movieInfo 경로가 올바르지 않습니다.');
+        }
+    };
     const renderStarRating = (voteAverage) => {
         const rating = voteAverage / 2;
         const stars = [];
@@ -31,7 +43,7 @@ const MovieCard = ({ movie, likedMovies, onMovieClick, onToggleRecommend }) => {
     };
 
     return (
-        <div className="movie-card" onClick={() => onMovieClick(movie.id)}>
+        <div className="movie-card" onClick={handleCardClick}>
             <img
                 src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
                 alt={movie.title}

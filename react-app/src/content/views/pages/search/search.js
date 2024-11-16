@@ -1,8 +1,9 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { Link } from 'react-router-dom';
-import { searchMovies, getGenres } from 'api/tmdbApi';
+import { searchMovies, getGenreMovieList } from 'api/tmdbApi';
 import './search.css';
 import route from 'routes.json';
+import MovieCard from 'content/views/pages/movieCardView/MovieCard';
 
 const SearchPage = () => {
     const [query, setQuery] = useState('');
@@ -16,14 +17,21 @@ const SearchPage = () => {
     const [sort, setSort] = useState('popularity.desc');
     const [year, setYear] = useState('');
     const [initialLoad, setInitialLoad] = useState(true); // 초기 로드 상태 관리
+    const [likedMovies, setLikedMovies] = useState([]);
 
     // 장르 목록 가져오기
     useEffect(() => {
         const fetchGenres = async () => {
-            const genreData = await getGenres();
-            setGenres(genreData.genres);
+            const genreData = await getGenreMovieList();
+            const resultMovies = genreData.results || [];
+            setGenres(resultMovies);
         };
         fetchGenres();
+    }, []);
+    // 좋아요 목록 가져오기
+    useEffect(() => {
+        const storedLikedMovies = JSON.parse(localStorage.getItem('likedMovies') || '[]');
+        setLikedMovies(storedLikedMovies);
     }, []);
 
     const handleSearch = useCallback(async () => {
@@ -67,6 +75,16 @@ const SearchPage = () => {
         setMovies([]);
         setPage(1);
     };
+    const toggleRecommend = (movie) => {
+        const updatedLikes = likedMovies.some((m) => m.id === movie.id)
+            ? likedMovies.filter((m) => m.id !== movie.id) // 영화 제거
+            : [...likedMovies, movie]; // 영화 추가
+
+        setLikedMovies(updatedLikes);
+        localStorage.setItem('likedMovies', JSON.stringify(updatedLikes)); // localStorage 업데이트
+    };
+
+
 
     return (
         <div className="search-page">
@@ -109,18 +127,13 @@ const SearchPage = () => {
             ) : (
                 <div className="movies-grid">
                     {movies.map((movie) => (
-                        <Link key={movie.id} to={route.movieInfo.replace(":id", movie.id)} className="movie-item">
-                            <div className="movie-image-container">
-                                <img src={`https://image.tmdb.org/t/p/w200${movie.poster_path}`} alt={movie.title} />
-                                <div className="movie-overlay">
-                                    <p className="movie-title">{movie.title}</p>
-                                    <div className="movie-info">
-                                        <span className="movie-release">개봉일: {movie.release_date}</span>
-                                        <span className="movie-rating">평점: {movie.vote_average} ★</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </Link>
+                        <MovieCard
+                            key={movie.id}
+                            movie={movie}
+                            likedMovies={likedMovies}
+                            onMovieClick={(id) => console.log(`Navigating to movie with id ${id}`)}
+                            onToggleRecommend={toggleRecommend}
+                        />
                     ))}
                 </div>
             )}
@@ -128,5 +141,7 @@ const SearchPage = () => {
         </div>
     );
 };
+
+
 
 export default SearchPage;

@@ -3,6 +3,7 @@ import {useNavigate, useParams} from 'react-router-dom';
 import { getDetailMovie } from 'api/tmdbApi';
 import './MovieDetailPage.css';
 import SimilarMoviesList from "content/views/pages/detailView/SimilarMovieList";
+import route from 'routes.json'
 
 const MovieDetailPage = () => {
 
@@ -43,7 +44,7 @@ const MovieDetailPage = () => {
         ? `https://www.youtube.com/embed/${movie.videos.results[0].key}`
         : null;
     const handleGenreClick = (genre) => {
-        navigate(`/genre/${genre.id}`);
+        navigate(route["category/genre/:id"].replace(':id', genre));
     }
 
     return (

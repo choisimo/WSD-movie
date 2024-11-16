@@ -90,14 +90,3 @@ export const searchMovies = async ({ query, page = 1, genre, rating, sort, year 
 };
 
 
-export const getGenreMovieList = async (genreId, page = 1) => {
-    const response = await api.get(`/discover/movie`, {
-        params: {
-            api_key: process.env.REACT_APP_TMDB_API_KEY,
-            with_genres: genreId,
-            page,
-        },
-    });
-    return response.data;
-};
-
