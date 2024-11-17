@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { Link } from 'react-router-dom';
-import { searchMovies, getGenreMovieList } from 'api/tmdbApi';
+import { searchMovies, getCategoryList, getGenres } from 'api/tmdbApi';
 import './search.css';
 import route from 'routes.json';
 import MovieCard from 'content/views/pages/movieCardView/MovieCard';
@@ -17,22 +17,21 @@ const SearchPage = () => {
     const [sort, setSort] = useState('popularity.desc');
     const [year, setYear] = useState('');
     const [initialLoad, setInitialLoad] = useState(true); // 초기 로드 상태 관리
-    const [likedMovies, setLikedMovies] = useState([]);
+    const [likedMovies, setLikedMovies] = useState(() => {
+        return JSON.parse(localStorage.getItem('likedMovies') || '[]');
+    });
+    const currentYear = new Date().getFullYear();
 
     // 장르 목록 가져오기
     useEffect(() => {
         const fetchGenres = async () => {
-            const genreData = await getGenreMovieList();
-            const resultMovies = genreData.results || [];
-            setGenres(resultMovies);
+            const genreData = await getGenres();
+            setGenres(genreData); // 장르 목록 설정
         };
         fetchGenres();
     }, []);
-    // 좋아요 목록 가져오기
-    useEffect(() => {
-        const storedLikedMovies = JSON.parse(localStorage.getItem('likedMovies') || '[]');
-        setLikedMovies(storedLikedMovies);
-    }, []);
+
+
 
     const handleSearch = useCallback(async () => {
         setLoading(true);
@@ -74,6 +73,9 @@ const SearchPage = () => {
         setYear('');
         setMovies([]);
         setPage(1);
+
+        // inital load 상태로 변경
+        handleSearch();
     };
     const toggleRecommend = (movie) => {
         const updatedLikes = likedMovies.some((m) => m.id === movie.id)
@@ -84,7 +86,22 @@ const SearchPage = () => {
         localStorage.setItem('likedMovies', JSON.stringify(updatedLikes)); // localStorage 업데이트
     };
 
+    const handleYearControl = (e) => {
+        const inputValue = e.target.value;
 
+        if (!/^\d+$/.test(inputValue)) {
+            setYear('');
+            return;
+        }
+
+        const inputYear = parseInt(inputValue, 10);
+
+        if (!isNaN(inputYear) && inputYear >= 1890 && inputYear <= currentYear) {
+            setYear(inputYear);
+        } else {
+            setYear('');
+        }
+    };
 
     return (
         <div className="search-page">
@@ -99,7 +116,9 @@ const SearchPage = () => {
                 <select value={selectedGenre} onChange={(e) => setSelectedGenre(e.target.value)}>
                     <option value="">장르 선택</option>
                     {genres.map((genre) => (
-                        <option key={genre.id} value={genre.id}>{genre.name}</option>
+                        <option key={genre.id} value={genre.id}>
+                            {genre.name}
+                        </option>
                     ))}
                 </select>
                 <select value={rating} onChange={(e) => setRating(e.target.value)}>
@@ -117,7 +136,9 @@ const SearchPage = () => {
                     type="number"
                     placeholder="개봉 연도"
                     value={year}
-                    onChange={(e) => setYear(e.target.value)}
+                    onChange={handleYearControl}
+                    min="1890"
+                    max={currentYear}
                 />
                 <button onClick={resetFilters}>초기화</button>
             </div>

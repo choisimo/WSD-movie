@@ -1,0 +1,13 @@
+.genre-page {
+    padding: 20px;
+    min-height: 100vh;
+}
+
+.genre-page h1 {
+    font-size: 2.5rem;
+    font-weight: bold;
+    text-align: center;
+    color: #999999;
+    margin-bottom: 20px;
+}
+

@@ -11,6 +11,7 @@ import LoadingSpinner from "content/components/utility/LoadingSpinner";
 import CategoryList from "content/views/pages/category/categoryList";
 import MyWishLists from "content/views/pages/bookMark/myWishLists";
 import SearchPage from "content/views/pages/search/search";
+import GenreList from "content/views/pages/genre/GenreList";
 
 const AppRoutes = () => {
 
@@ -36,7 +37,7 @@ const AppRoutes = () => {
             {/* 공개된 경로 */}
             <Route path={routes.SignIn} element={<SignIn />} />
             <Route path={routes.home} element={<HomePage />} />
-            <Route path={routes["category/genre/:id"]} element={<CategoryList />} />
+            <Route path={routes["category/genre/:id"]} element={<GenreList />} />
 
 
             {/* 보호된 경로 */}

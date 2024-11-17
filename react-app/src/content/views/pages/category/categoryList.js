@@ -1,16 +1,14 @@
 import React, {useCallback, useEffect, useState} from 'react';
 import {Link, useNavigate, useParams} from 'react-router-dom';
-import {getGenreMovieList, getMovies} from 'api/tmdbApi';
+import {getCategoryList, getMovies} from 'api/tmdbApi';
 import './categoryList.css';
 import route from 'routes.json';
-import BookmarkButton from "content/views/pages/bookMark/myWishLists";
+import MovieCard from 'content/views/pages/movieCardView/MovieCard'
 import { getLikedMovies, toggleLikeMovie } from "content/components/utility/bookMark/likeMovies";
 
 const CategoryList = ({ category: propCategory }) => {
     const { category: paramCategory } = useParams();
     const category = propCategory || paramCategory;
-
-    const useCallback = require('react').useCallback;
 
     const [movies, setMovies] = useState([]);
     const [page, setPage] = useState(1);
@@ -30,7 +28,7 @@ const CategoryList = ({ category: propCategory }) => {
     const fetchMovies = useCallback(async () => {
         setLoading(true);
         try {
-            const data = await getGenreMovieList(category, page);
+            const data = await getCategoryList(category, page);
             setMovies((prevMovies) => [...prevMovies, ...data.results]);
             setTotalPages(data.total_pages);
         } catch (error) {
@@ -43,6 +41,16 @@ const CategoryList = ({ category: propCategory }) => {
     useEffect(() => {
         fetchMovies();
     }, [fetchMovies]);
+
+    const handleToggleRecommend = (movie) => {
+        setLikedMovies((prevLikedMovies) => {
+            const updatedMovies = prevLikedMovies.some((m) => m.id === movie.id)
+                ? prevLikedMovies.filter((m) => m.id !== movie.id)
+                : [...prevLikedMovies, movie];
+            localStorage.setItem('likedMovies', JSON.stringify(updatedMovies));
+            return updatedMovies;
+        });
+    };
 
     const handleScroll = useCallback(() => {
         if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 500 && !loading) {
@@ -57,24 +65,19 @@ const CategoryList = ({ category: propCategory }) => {
         return () => window.removeEventListener('scroll', handleScroll);
     }, [handleScroll]);
 
+
     return (
         <div className="category-page">
             <h1>{categoryName(category)}</h1>
             <div className="movies-grid">
                 {movies.map((movie) => (
-                    <Link key={movie.id} to={route.movieInfo.replace(":id", movie.id)} className="movie-item">
-                        <div className="movie-image-container">
-                            <img src={`https://image.tmdb.org/t/p/w200${movie.poster_path}`} alt={movie.title} />
-                            <div className="movie-overlay">
-                                <p className="movie-title">{movie.title}</p>
-                                <div className="movie-info">
-                                    <span className="movie-release">개봉일: {movie.release_date}</span>
-                                    <span className="movie-rating">평점: {movie.vote_average} ★</span>
-                                </div>
-                            </div>
-                        </div>
-                    </Link>
-                ))}
+                    <MovieCard
+                        key={movie.id}
+                        movie={movie}
+                        likedMovies={likedMovies}
+                        onToggleRecommend={handleToggleRecommend}
+                        onMovieClick={() => console.log(`Clicked movie ID: ${movie.id}`)}
+                    />                ))}
             </div>
             {loading && <div className="loading-spinner">Loading...</div>}
         </div>

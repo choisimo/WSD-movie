@@ -1,17 +1,18 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, forwardRef } from 'react';
 import BookmarkButton from 'content/components/utility/bookMark/bookMarkButton';
 import './MovieCard.css';
 import {useNavigate} from "react-router-dom";
 import route from "routes";
 import movieDetailPage from "content/views/pages/detailView/MovieDetailPage";
 
-const MovieCard = ({ movie, likedMovies, onMovieClick = () => {}, onToggleRecommend }) => {
-    const [isLiked, setIsLiked] = useState(likedMovies.some((m) => m.id === movie.id));
+const MovieCard = forwardRef(({ movie, likedMovies, onToggleRecommend }, ref) => {
+    const [isLiked, setIsLiked] = useState(likedMovies ? likedMovies.some((m) => m.id === movie.id) : false);
     const navigate = useNavigate();
 
     useEffect(() => {
+        const likedMovies = JSON.parse(localStorage.getItem('likedMovies')) || [];
         setIsLiked(likedMovies.some((m) => m.id === movie.id));
-    }, [likedMovies, movie.id]);
+    }, [movie.id]);
 
     const handleBookmarkClick = () => {
         onToggleRecommend(movie);
@@ -43,7 +44,7 @@ const MovieCard = ({ movie, likedMovies, onMovieClick = () => {}, onToggleRecomm
     };
 
     return (
-        <div className="movie-card" onClick={handleCardClick}>
+        <div className="movie-card" ref={ref} onClick={handleCardClick}>
             <img
                 src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
                 alt={movie.title}
@@ -62,6 +63,12 @@ const MovieCard = ({ movie, likedMovies, onMovieClick = () => {}, onToggleRecomm
             <p className="movie-title">{movie.title}</p>
         </div>
     );
-};
+});
+
+MovieCard.defaultProps = {
+    onToggleRecommend: () => {
+    },
+}
+
 
 export default MovieCard;
