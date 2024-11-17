@@ -2,6 +2,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import { searchMovies, getCategoryList, getGenres } from 'api/tmdbApi';
 import './search.css';
+import './m_search.css';
 import route from 'routes.json';
 import MovieCard from 'content/views/pages/movieCardView/MovieCard';
 
@@ -50,6 +51,11 @@ const SearchPage = () => {
     useEffect(() => {
         handleSearch();
     }, [page, query, selectedGenre, rating, sort, year, handleSearch]);
+
+    useEffect(() => {
+        setPage(1); // 검색 조건 변경 시 페이지 초기화
+        setMovies([]); // 이전 검색 결과 초기화
+    }, [query, selectedGenre, rating, sort, year]);
 
     // 무한 스크롤 처리
     const handleScroll = useCallback(() => {

@@ -1,0 +1,49 @@
+@media (max-width: 768px) {
+    .filter-controls {
+        flex-direction: column; /* 세로 정렬 */
+        align-items: stretch; /* 필터가 화면 너비에 맞게 확장 */
+        gap: 20px; /* 필터 간 간격 추가 */
+        padding: 10px;
+        margin-bottom: 20px;
+        border-radius: 8px; /* 부드러운 모서리 */
+        box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1); /* 가벼운 그림자 효과 */
+    }
+
+    .filter-controls input,
+    .filter-controls select,
+    .filter-controls button {
+        font-size: 1em;
+        width: 100%; /* 필터 옵션이 화면 너비를 차지 */
+        box-sizing: border-box; /* 너비 계산에 패딩 포함 */
+    }
+
+    .filter-controls button {
+        background-color: #007BFF;
+        color: white;
+        border-radius: 5px;
+        padding: 10px 15px;
+        font-size: 1.1em;
+        font-weight: bold;
+        transition: background-color 0.3s ease;
+    }
+
+    .filter-controls button:hover {
+        background-color: #0056b3;
+    }
+
+    .filter-controls button:active {
+        background-color: #003f7f; /* 활성 상태 색상 */
+    }
+
+    .filter-controls select {
+        appearance: none; /* 기본 드롭다운 화살표 제거 */
+        background-color: #9e9898; /* 어두운 배경 */
+        color: #ffffff; /* 밝은 글자색 */
+        padding-right: 30px; /* 여유 공간 확보 */
+    }
+
+    .filter-controls select:focus {
+        outline: none;
+        border-color: #007BFF;
+    }
+}
