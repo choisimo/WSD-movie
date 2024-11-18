@@ -1,0 +1,35 @@
+.movie-scroll-container {
+    display: flex;
+    overflow-x: auto;
+    gap: 1rem;
+    padding: 1rem;
+    scroll-behavior: smooth;
+}
+
+.movie-cast{
+    justify-content: center;
+    justify-items: center;
+}
+.actor-movies {
+    justify-content: center;
+    justify-items: center;
+}
+
+.actor-movie-item {
+    flex: 0 0 auto;
+    width: 150px;
+    cursor: pointer;
+    text-align: center;
+}
+
+.actor-movie-poster {
+    width: 100%;
+    height: 225px;
+    object-fit: cover;
+    border-radius: 8px;
+    transition: transform 0.2s ease-in-out;
+}
+
+.actor-movie-poster:hover {
+    transform: scale(1.05);
+}
