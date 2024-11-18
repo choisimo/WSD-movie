@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { getMovies } from 'api/tmdbApi';
 import './home.css';
+import homeModule from './home.module.css';
 import { useNavigate } from 'react-router-dom';
 import routes from 'routes.json';
 import { getLikedMovies, toggleLikeMovie } from 'content/components/utility/bookMark/likeMovies'; // 유틸리티 함수 불러오기
@@ -13,7 +14,7 @@ const HomePage = () => {
     const [featuredMovie, setFeaturedMovie] = useState([]);
     const [currentBannerIndex, setCurrentBannerIndex] = useState(0);
     const [likedMovies, setLikedMovies] = useState(getLikedMovies() || []);
-
+    const [isExpanded, setIsExpanded] = useState(false);
 
     const sections = [
         {title: '최신 컨텐츠', category: 'now_playing'},
@@ -21,6 +22,10 @@ const HomePage = () => {
         {title: '최고 평점 컨텐츠', category: 'top_rated'},
         {title: '내가 찜한 컨텐츠', category: 'upcoming'}
     ];
+
+    const handleToggleExpand = () => {
+        setIsExpanded((prev) => !prev); // 설명 확장/접기 토글
+    };
 
     // 무한 스크롤을 위해 페이지별 데이터를 불러오는 함수
     const loadMoreMovies = async (category) => {
@@ -78,20 +83,38 @@ const HomePage = () => {
         navigate(`/category/${category}`);
     };
 
+    const overviewText = featuredMovie[currentBannerIndex]?.overview;
+    const shortOverview = overviewText?.slice(0, 100) + '...'; // 요약된 설명
+
     return (
         <div className="home">
             {featuredMovie.length > 0 && (
                 <div
-                    className="banner"
+                    className={homeModule.banner}
                     style={{backgroundImage: `url(https://image.tmdb.org/t/p/w1280${featuredMovie[currentBannerIndex].backdrop_path})`}}
                 >
-                    <div className="banner-content">
+                    <div className={homeModule.bannerContent}>
                         <h1>{featuredMovie[currentBannerIndex].title}</h1>
-                        <p>{featuredMovie[currentBannerIndex].overview}</p>
-                        <button onClick={() => handleMovieClick(featuredMovie[currentBannerIndex].id)}>바로보기</button>
+                        <p>
+                            {isExpanded ? overviewText : shortOverview}
+                            <span
+                                className={homeModule.toggleButton}
+                                onClick={handleToggleExpand}
+                            >
+                                {isExpanded ? ' 접기' : ' 더보기'}
+                            </span>
+                        </p>
+                        <button
+                            onClick={() =>
+                                handleMovieClick(featuredMovie[currentBannerIndex].id)
+                            }
+                        >
+                            바로보기
+                        </button>
                     </div>
                 </div>
             )}
+
 
             {movies.map((section, idx) => (
                 <div key={idx} className="content-section">

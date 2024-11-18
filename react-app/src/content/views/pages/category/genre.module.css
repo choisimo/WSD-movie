@@ -1,0 +1,55 @@
+.tagsContainer {
+    margin-top: 2rem;
+    padding: 1rem;
+    background-color: rgba(158, 152, 152, 0.42);
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.tagsList {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    justify-content: center;
+}
+
+.genreButton {
+    width: auto;
+    padding: 0.5rem 1rem;
+    font-size: 0.9rem;
+    font-weight: bold;
+    color: white;
+    background-color: #007bff;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.genreButton:hover {
+    background-color: #0056b3;
+    transform: scale(1.05);
+}
+
+.unknown-category {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+    text-align: center;
+    font-family: Arial, sans-serif;
+}
+
+.unknown-category h1 {
+    font-size: 2.5rem;
+    color: #9e9898;
+    margin-bottom: 1rem;
+    text-align: center;
+}
+
+.unknown-category p {
+    font-size: 1.2rem;
+    color: #555;
+    margin-bottom: 2rem;
+}
