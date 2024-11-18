@@ -145,4 +145,40 @@ export const searchMovies = async ({ query, page = 1, genre, rating, sort, year 
     return response.data;
 };
 
+// 영화 배우 정보를 불러오는 함수
+export const getMovieCredits = async (movieId) => {
+    try {
+        const response = await api.get(`/movie/${movieId}/credits`, {
+            params: {
+                api_key: process.env.REACT_APP_TMDB_API_KEY,
+            },
+        });
+        return response.data;
+    } catch (error) {
+        console.error('TMDB API Error:', error);
+        return [];
+    }
+};
+
+// 영화 리뷰 정보를 불러오는 함수
+export const getMovieReviews = async (movieId) => {
+    try {
+        const response = await api.get(`/movie/${movieId}/reviews`);
+        return response.data.results; // 리뷰 배열 반환
+    } catch (error) {
+        console.error('Error fetching movie reviews:', error);
+        return []; // 기본값
+    }
+};
+
+// 배우의 영화 출연 정보를 불러오는 함수
+export const getPersonMovieCredits = async (personId) => {
+    try {
+        const response = await api.get(`/person/${personId}/movie_credits`);
+        return response.data.cast; // 배우가 출연한 영화 리스트 반환
+    } catch (error) {
+        console.error('Error fetching person movie credits:', error);
+        return [];
+    }
+};
 

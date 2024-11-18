@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import {Link, useNavigate} from 'react-router-dom';
 import './header.css';
+import './header_categoryList.css';
 import routes from "routes.json";
 import { TicketIcon, SearchIcon, BellIcon, UserIcon, BarsIcon, TimesIcon } from 'artifacts/icons';
 
@@ -35,9 +36,9 @@ const Header = () => {
                 &ensp;
                 <nav className="nav-links desktop-nav">
                     <ul>
-                        <li><Link to="/popular">대세 콘텐츠</Link></li>
-                        <li><Link to="/wishlist">내가 찜한 리스트</Link></li>
-                        <li><Link to={routes.search}>카테고리</Link></li>
+                        <li><Link to={routes["category/popular"]}>대세 콘텐츠</Link></li>
+                        <li><Link to={routes.wishList}>내가 찜한 리스트</Link></li>
+                        <li><Link to={routes.categoryList}>카테고리</Link></li>
                     </ul>
                 </nav>
             </div>
