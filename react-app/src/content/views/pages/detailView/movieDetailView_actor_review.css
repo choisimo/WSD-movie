@@ -1,8 +1,21 @@
+/* 주요 출연진 목록 (가로 스크롤 가능) */
 .cast-list {
     display: flex;
     gap: 1rem;
     list-style: none;
     padding: 0;
+    overflow-x: auto; /* 가로 스크롤 가능 */
+    white-space: nowrap; /* 줄바꿈 방지 */
+    max-width: 100%; /* 부모 요소 너비에 맞춤 */
+    box-sizing: border-box; /* 패딩 포함 너비 계산 */
+}
+.cast-list li {
+    flex: 0 0 auto;
+    text-align: center;
+    width: 100px; /* 사진 크기 고정 */
+}
+.cast-list li:hover {
+    transform: scale(1.15);
 }
 
 .actor-photo {
@@ -10,6 +23,7 @@
     height: 150px;
     object-fit: cover;
     border-radius: 8px;
+    transition: transform 0.2s ease-in-out;
 }
 
 .character {
