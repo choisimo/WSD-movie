@@ -1,9 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {useNavigate, useParams} from 'react-router-dom';
 import { getDetailMovie, getMovieCredits, getMovieReviews,getPersonMovieCredits} from 'api/tmdbApi';
 import './MovieDetailPage.css';
 import './movieDetailView_actor_review.css';
 import './actor_related_list.css';
+import main_style from './movieDetailPage.module.css';
 import SimilarMoviesList from "content/views/pages/detailView/SimilarMovieList";
 import route from 'routes.json'
 
@@ -23,6 +24,20 @@ const MovieDetailPage = () => {
     const [actorMoviesPage, setActorMoviesPage] = useState(1); // 배우 영화 페이지
     const [actorMoviesTotalPages, setActorMoviesTotalPages] = useState(1); // 총 페이지
     const navigate = useNavigate();
+
+    const scrollContainerRef = useRef(null);
+    const touchStartX = useRef(0);
+    const scrollLeftStart = useRef(0);
+
+    const handleTouchStart = (e) => {
+        touchStartX.current = e.touches[0].clientX; // 터치 시작 위치 저장
+        scrollLeftStart.current = scrollContainerRef.current.scrollLeft; // 현재 스크롤 위치 저장
+    };
+
+    const handleTouchMove = (e) => {
+        const deltaX = touchStartX.current - e.touches[0].clientX; // 터치 이동 거리 계산
+        scrollContainerRef.current.scrollLeft = scrollLeftStart.current + deltaX; // 스크롤 위치 업데이트
+    };
 
     useEffect(() => {
         const fetchMovie = async () => {
@@ -75,12 +90,26 @@ const MovieDetailPage = () => {
     const handleShowReviews = () => {
         setShowReviews((prev) => !prev);
     };
+
+    const handleToggleExpand = () => {
+        setIsExpanded((prev) => !prev);
+    };
+
     const handleActorClick = async (actor) => {
+        if (selectedActor?.id === actor.id) {
+            // 같은 배우를 클릭하면 리스트 접기
+            setSelectedActor(null);
+            setActorMovies([]);
+            return;
+        }
+
+        // 다른 배우를 클릭하면 새로운 영화 리스트 가져오기
         setSelectedActor(actor);
         setActorMovies([]);
         setActorMoviesPage(1); // 페이지 초기화
         await fetchActorMovies(actor, 1);
     };
+
     const handleScroll = (e) => {
         const { scrollLeft, scrollWidth, clientWidth } = e.target;
         if (scrollLeft + clientWidth >= scrollWidth - 50 && actorMoviesPage < actorMoviesTotalPages) {
@@ -88,7 +117,7 @@ const MovieDetailPage = () => {
         }
     };
 
-    const shortOverview = movie.overview.slice(0, 60);
+    const overviewText = isExpanded ? movie.overview : movie.overview.slice(0, 100) + "...";
     const selectedGenres = movie.genres.slice(0, 3);
     const trailerUrl = movie.videos && movie.videos.results.length > 0
         ? `https://www.youtube.com/embed/${movie.videos.results[0].key}`
@@ -108,7 +137,12 @@ const MovieDetailPage = () => {
                 <div className="overlay">
                     <div className="content">
                         <h1>{movie.title}</h1>
-                        <p className="movie-description">{movie.overview}</p>
+                        <p className="movie-description">
+                            {overviewText}
+                            <span className={main_style.toggleOverview} onClick={handleToggleExpand}>
+                                {isExpanded ? " 접기" : " 더보기"}
+                            </span>
+                        </p>
                         <p className="movie-info">
                             <strong>평점:</strong> {movie.vote_average}<br/>
                             <strong>장르:</strong>
@@ -147,7 +181,7 @@ const MovieDetailPage = () => {
             <div className="movie-cast">
                 <h2>주요 출연진</h2>
                 <ul className="cast-list">
-                    {credits.cast.slice(0, 5).map((actor) => (
+                    {credits.cast.map((actor) => (
                         <li key={actor.id} onClick={() => handleActorClick(actor)}>
                             <img
                                 src={`https://image.tmdb.org/t/p/w200${actor.profile_path}`}
@@ -161,28 +195,41 @@ const MovieDetailPage = () => {
                 </ul>
             </div>
 
-            {/* 배우 영화 리스트 */}
             {selectedActor && (
                 <div className="actor-movies">
                     <h2>{selectedActor.name} 출연 영화</h2>
-                    <div className="movie-scroll-container" onScroll={handleScroll}>
-                        {actorMovies.map((movie) => (
-                            <div
-                                key={movie.id}
-                                className="actor-movie-item"
-                                onClick={() => handleMovieClick(movie.id)}
-                            >
-                                <img
-                                    src={`https://image.tmdb.org/t/p/w200${movie.poster_path}`}
-                                    alt={movie.title}
-                                    className="actor-movie-poster"
-                                />
-                                <p>{movie.title}</p>
-                            </div>
-                        ))}
+                    <div className={main_style.movieScrollButtons}>
+                        <button className={main_style.scrollButton.left} onClick={() => handleScroll(-300)}>
+                            {"<"}
+                        </button>
+                        <div
+                            className="movie-scroll-container"
+                            ref={scrollContainerRef}
+                            onTouchStart={handleTouchStart}
+                            onTouchMove={handleTouchMove}
+                        >
+                            {actorMovies.map((movie) => (
+                                <div
+                                    key={movie.id}
+                                    className="actor-movie-item"
+                                    onClick={() => handleMovieClick(movie.id)}
+                                >
+                                    <img
+                                        src={`https://image.tmdb.org/t/p/w200${movie.poster_path}`}
+                                        alt={movie.title}
+                                        className="actor-movie-poster"
+                                    />
+                                    <p>{movie.title}</p>
+                                </div>
+                            ))}
+                        </div>
+                        <button className="scroll-button right" onClick={() => handleScroll(300)}>
+                            {">"}
+                        </button>
                     </div>
                 </div>
             )}
+
 
             {/* 사용자 리뷰 섹션 */}
             {reviews.length > 0 && (
