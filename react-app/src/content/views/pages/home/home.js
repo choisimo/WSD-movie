@@ -91,23 +91,20 @@ const HomePage = () => {
             {featuredMovie.length > 0 && (
                 <div
                     className={homeModule.banner}
-                    style={{backgroundImage: `url(https://image.tmdb.org/t/p/w1280${featuredMovie[currentBannerIndex].backdrop_path})`}}
+                    style={{
+                        backgroundImage: `url(https://image.tmdb.org/t/p/w1280${featuredMovie[currentBannerIndex].backdrop_path})`,
+                    }}
                 >
                     <div className={homeModule.bannerContent}>
                         <h1>{featuredMovie[currentBannerIndex].title}</h1>
                         <p>
                             {isExpanded ? overviewText : shortOverview}
-                            <span
-                                className={homeModule.toggleButton}
-                                onClick={handleToggleExpand}
-                            >
-                                {isExpanded ? ' 접기' : ' 더보기'}
-                            </span>
+                            <span className={homeModule.toggleButton} onClick={handleToggleExpand}>
+                {isExpanded ? ' 접기' : ' 더보기'}
+            </span>
                         </p>
-                        <button
-                            onClick={() =>
-                                handleMovieClick(featuredMovie[currentBannerIndex].id)
-                            }
+                        <button className={homeModule.bannerButton}
+                            onClick={() => handleMovieClick(featuredMovie[currentBannerIndex].id)}
                         >
                             바로보기
                         </button>

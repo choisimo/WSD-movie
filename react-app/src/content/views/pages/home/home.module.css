@@ -13,10 +13,22 @@
     background-size: cover;
     background-position: center;
     color: #fff;
-    height: auto; /* 높이를 컨텐츠에 맞게 조정 */
-    min-height: 50vh; /* 최소 높이 설정 */
-    max-height: 100vh; /* 최대 높이 설정 */
-    overflow: hidden; /* 기본적으로 숨김 */
+    margin-top: 20px; /* 화면 상단에서 띄우기 */
+    padding: 20px; /* 배너 내부 여백 추가 */
+    height: auto; /* 자동 높이 조정 */
+    min-height: 60vh; /* 최소 높이 설정 */
+    max-height: 80vh; /* 최대 높이 설정 */
+    overflow: hidden; /* 넘치는 내용 숨김 */
+    border-radius: 10px; /* 둥근 모서리 추가 */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5); /* 배너 그림자 추가 */
+}
+
+.bannerButton {
+    width: 10rem;
+    justify-content: center;
+    align-content: center;
+    display: flex;
+
 }
 
 .bannerContent {
@@ -30,7 +42,19 @@
     background-color: rgba(0, 0, 0, 0.5); /* 텍스트 가독성을 위한 배경 */
     border-radius: 8px;
     box-sizing: border-box; /* 패딩 포함 계산 */
+    align-content: center;
 }
+
+
+.bannerContent p {
+    /* 텍스트 줄바꿈 */
+    word-wrap: break-word; /* 단어 줄바꿈 */
+    word-break: break-word; /* 긴 단어 줄바꿈 */
+    overflow-wrap: break-word; /* 긴 단어 줄바꿈 */
+    max-width: 50%; /* 텍스트 최대 너비 */
+    line-height: 1.5; /* 줄 간격 */
+}
+
 .bannerContent h1 {
     font-size: 1.5rem; /* 제목 크기 */
     margin-bottom: 20px; /* 제목과 내용 간 간격 */
@@ -45,8 +69,8 @@
 }
 
 .bannerContent button {
-    font-size: 1rem; /* 버튼 텍스트 크기 */
-    padding: 10px 20px; /* 버튼 내부 여백 */
+    font-size: 1rem;
+    padding: 10px 20px;
     background-color: #e50914; /* 넷플릭스 스타일 빨간색 */
     color: #fff; /* 버튼 텍스트 흰색 */
     border: none;
@@ -54,6 +78,8 @@
     cursor: pointer;
     transition: background-color 0.3s ease;
 }
+
+
 
 .bannerContent button:hover {
     background-color: #ff000d; /* 호버 시 더 밝은 빨간색 */

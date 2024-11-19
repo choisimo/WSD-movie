@@ -198,34 +198,21 @@ const MovieDetailPage = () => {
             {selectedActor && (
                 <div className="actor-movies">
                     <h2>{selectedActor.name} 출연 영화</h2>
-                    <div className={main_style.movieScrollButtons}>
-                        <button className={main_style.scrollButton.left} onClick={() => handleScroll(-300)}>
-                            {"<"}
-                        </button>
-                        <div
-                            className="movie-scroll-container"
-                            ref={scrollContainerRef}
-                            onTouchStart={handleTouchStart}
-                            onTouchMove={handleTouchMove}
-                        >
-                            {actorMovies.map((movie) => (
-                                <div
-                                    key={movie.id}
-                                    className="actor-movie-item"
-                                    onClick={() => handleMovieClick(movie.id)}
-                                >
-                                    <img
-                                        src={`https://image.tmdb.org/t/p/w200${movie.poster_path}`}
-                                        alt={movie.title}
-                                        className="actor-movie-poster"
-                                    />
-                                    <p>{movie.title}</p>
-                                </div>
-                            ))}
-                        </div>
-                        <button className="scroll-button right" onClick={() => handleScroll(300)}>
-                            {">"}
-                        </button>
+                    <div className="movie-scroll-container">
+                        {actorMovies.map((movie) => (
+                            <div
+                                key={movie.id}
+                                className="actor-movie-item"
+                                onClick={() => handleMovieClick(movie.id)}
+                            >
+                                <img
+                                    src={`https://image.tmdb.org/t/p/w200${movie.poster_path}`}
+                                    alt={movie.title}
+                                    className="actor-movie-poster"
+                                />
+                                <p>{movie.title}</p>
+                            </div>
+                        ))}
                     </div>
                 </div>
             )}
@@ -249,7 +236,7 @@ const MovieDetailPage = () => {
                     )}
                 </div>
             )}
-            <SimilarMoviesList genreIds={selectedGenres.map((genre) => genre.id)} />
+            <SimilarMoviesList genreIds={selectedGenres.map((genre) => genre.id)}/>
         </div>
     );
 };
