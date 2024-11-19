@@ -24,16 +24,16 @@ jobs:
 
       - name: Install dependencies
         run: npm install
-        working-directory: ./WSD-movie/react-app # 프로젝트 루트 경로로 변경
+        working-directory: /react-app # 프로젝트 루트 경로로 변경
 
       - name: Build project
         run: npm run build
-        working-directory: ./WSD-movie/react-app # 빌드 경로 지정
+        working-directory: /react-app # 빌드 경로 지정
 
       - name: Upload artifact for deployment
         uses: actions/upload-pages-artifact@v1
         with:
-          path: ./WSD-movie/react-app/build # 빌드 결과물 경로 지정
+          path: /react-app/build # 빌드 결과물 경로 지정
 
   deploy:
     needs: build
