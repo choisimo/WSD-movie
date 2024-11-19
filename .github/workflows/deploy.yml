@@ -3,7 +3,7 @@ name: Deploy to GitHub Pages
 on:
   push:
     branches:
-      - main 
+      - main
 
 permissions:
   contents: write
@@ -22,19 +22,19 @@ jobs:
         with:
           node-version: '16'
 
-      - name: Navigate to react root
-        working-directory: ./react-app
-
       - name: Install dependencies
-        run: npm install # 프로젝트에 맞게 변경
+        run: npm install
+        working-directory: ./WSD-movie/react-app # 프로젝트 루트 경로로 변경
 
       - name: Build project
-        run: npm run build # 프로젝트에 맞게 변경
+        run: npm run build
+        working-directory: ./WSD-movie/react-app # 빌드 경로 지정
 
-      - name: Deploy to GitHub Pages
+      - name: Upload artifact for deployment
         uses: actions/upload-pages-artifact@v1
         with:
-          path: ./build # 빌드된 폴더 경로
+          path: ./WSD-movie/react-app/build # 빌드 결과물 경로 지정
+
   deploy:
     needs: build
     runs-on: ubuntu-latest
