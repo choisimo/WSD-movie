@@ -4,40 +4,67 @@
     gap: 1rem;
     padding: 1rem;
     scroll-behavior: smooth;
+    scrollbar-width: none; /* Firefox */
+    background-color: #444; /* 리스트 배경 */
+    border-radius: 8px;
 }
+.movie-scroll-container::-webkit-scrollbar {
+    display: none; /* Chrome, Safari */
+}
+
 
 .movie-cast{
     justify-content: center;
     justify-items: center;
 }
 .actor-movies {
-    overflow-x: auto; /* 가로 스크롤 가능 */
-    white-space: nowrap; /* 줄바꿈 방지 */
-    padding: 10px;
+    display: flex;
+    flex-direction: column;
     gap: 1rem;
-    background-color: #222;
+    margin-top: 1.5rem;
+    background-color: #333; /* 전체 배경 색상 */
     border-radius: 8px;
+    padding: 1rem;
+}
+
+.actor-movies h2 {
+    font-size: 1.5rem;
+    color: #fff;
+    margin-bottom: 1rem;
+    text-align: center;
 }
 
 
 .actor-movie-item {
     flex: 0 0 auto;
-    display: inline-block;
-    width: 150px;
+    width: 150px; /* 고정된 너비 */
     cursor: pointer;
     text-align: center;
     margin-right: 1rem;
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+    border-radius: 8px;
+    background-color: #222; /* 카드 배경 */
+    padding: 0.5rem;
 }
 
+.actor-movie-item:hover {
+    transform: scale(1.1);
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3);
+}
 
 .actor-movie-poster {
     width: 100%;
-    height: 225px;
+    height: 200px;
     object-fit: cover;
     border-radius: 8px;
-    transition: transform 0.2s ease-in-out;
+    margin-bottom: 0.5rem;
 }
 
 .actor-movie-poster:hover {
     transform: scale(1.05);
+}
+.actor-movie-item p {
+    font-size: 0.9rem;
+    color: #fff;
+    line-height: 1.4;
 }

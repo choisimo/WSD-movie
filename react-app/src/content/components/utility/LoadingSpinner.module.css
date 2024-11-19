@@ -1,5 +1,4 @@
-/* LoadingSpinner.css */
-.loading-spinner {
+.loadingSpinner {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -18,9 +17,10 @@
     border: 5px solid rgba(255, 255, 255, 0.3);
     border-top: 5px solid #fff;
     border-radius: 50%;
-    width: 50px;
-    height: 50px;
+    width: 50px; /* 고정 크기 */
+    height: 50px; /* 고정 크기 */
     animation: spin 1s linear infinite;
+    box-sizing: border-box; /* 박스 크기 계산을 border 포함 */
 }
 
 @keyframes spin {

@@ -14,42 +14,6 @@
     margin-bottom: 20px;
 }
 
-.filter-controls {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 15px;
-    justify-content: center;
-    margin-bottom: 20px;
-}
-
-.filter-controls input,
-.filter-controls select,
-.filter-controls button {
-    padding: 10px 15px;
-    font-size: 1em;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-}
-
-.filter-controls input:focus,
-.filter-controls select:focus,
-.filter-controls button:focus {
-    outline: none;
-    border-color: #007BFF;
-}
-
-.filter-controls button {
-    background-color: #007BFF;
-    color: #fff;
-    border: none;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-}
-
-.filter-controls button:hover {
-    background-color: #0056b3;
-}
-
 .movies-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));

@@ -4,7 +4,7 @@ import 'content/components/security/projectionRouter.css';
 import route from 'routes';
 
 const ProtectionRouter = ({ children }) => {
-    const [isAuthenticated, setIsAuthenticated] = useState(localStorage.getItem('TMDb-Key') != null);
+    const [isAuthenticated, setIsAuthenticated] = useState(localStorage.getItem('TMDb-Key') != null || sessionStorage.getItem('TMDb-Key') != null);
     const [showWarn, setShowWarn] = useState(false);
     const [redirect, setRedirect] = useState(false);
 

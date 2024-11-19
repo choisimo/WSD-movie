@@ -1,7 +1,7 @@
 class AuthService {
 
     // 로그인 시도
-    tryLogin(email, password, saveToken = true) {
+    tryLogin(email, password, rememberMe) {
         return new Promise((resolve, reject) => {
             const users = JSON.parse(localStorage.getItem('users') || '[]');
             const user = users.find(user => user.id === email);
@@ -14,8 +14,11 @@ class AuthService {
                 reject(new Error('로그인 실패! 비밀번호가 일치 하지 않습니다.'));
             } else {
                 // 로그인 성공
-                if (saveToken) {
-                    localStorage.setItem('TMDb-Key', user.password); // 로그인 여부 확인용 키 저장
+                const token = user.password;
+                if (rememberMe) {
+                    localStorage.setItem('TMDb-Key', token); // 로그인 여부 확인용 키 저장
+                } else {
+                    sessionStorage.setItem('TMDb-Key', token);
                 }
                 resolve(user);
             }

@@ -1,11 +1,11 @@
-import React, {useCallback, useEffect, useState} from 'react';
-import {Link, useNavigate, useParams} from 'react-router-dom';
-import {getCategoryList, getMovies, getGenres } from 'api/tmdbApi';
+import React, { useCallback, useEffect, useState } from 'react';
+import { Link, useNavigate, useParams } from 'react-router-dom';
+import { getCategoryList, getMovies, getGenres } from 'api/tmdbApi';
 import './categoryList.css';
 import styles from './genre.module.css';
 import route from 'routes.json';
-import MovieCard from 'content/views/pages/movieCardView/MovieCard'
-import { getLikedMovies, toggleLikeMovie } from "content/components/utility/bookMark/likeMovies";
+import MovieCard from 'content/views/pages/movieCardView/MovieCard';
+import { getLikedMovies } from "content/components/utility/bookMark/likeMovies";
 
 const allCategories = [
     { id: 'popular', name: '인기 영화' },
@@ -21,7 +21,7 @@ const CategoryList = ({ category: propCategory }) => {
     const [movies, setMovies] = useState([]);
     const [page, setPage] = useState(1);
     const [totalPages, setTotalPages] = useState(1);
-    const [loading, setLoading] = useState(true);
+    const [loading, setLoading] = useState(false);
     const [likedMovies, setLikedMovies] = useState(getLikedMovies || []);
 
     const navigate = useNavigate();
@@ -32,12 +32,14 @@ const CategoryList = ({ category: propCategory }) => {
     };
 
     const fetchMovies = useCallback(async () => {
-        if (!allCategories.some((cat) => cat.id === category)) return; // 잘못된 카테고리는 요청하지 않음
+        if (!allCategories.some((cat) => cat.id === category)) return;
 
         setLoading(true);
         try {
             const data = await getCategoryList(category, page);
-            setMovies((prevMovies) => [...prevMovies, ...data.results]);
+            setMovies((prevMovies) =>
+                page === 1 ? data.results : [...prevMovies, ...data.results]
+            );
             setTotalPages(data.total_pages);
         } catch (error) {
             console.error("Error fetching movies:", error);
@@ -45,27 +47,23 @@ const CategoryList = ({ category: propCategory }) => {
             setLoading(false);
         }
     }, [category, page]);
+
     const fetchGenres = useCallback(async () => {
         try {
             const data = await getGenres();
-            console.log('Fetched genres:', data); // 데이터 확인용 로그
-            setGenres(data); // 가져온 장르 데이터를 상태에 저장
+            setGenres(data);
         } catch (error) {
             console.error('Error fetching genres:', error);
         }
     }, []);
 
-
-    // category 변경 시 새로운 카테고리의 영화 목록을 불러옴
     useEffect(() => {
-        setMovies([]);
-        setPage(1);
-        setTotalPages(1);
-    }, [category, fetchMovies]);
+        if (page > 0) {
+            fetchMovies();
+        }
+    }, [page, fetchMovies]);
 
-    useEffect(() => {
-        fetchMovies();
-    }, [fetchMovies]);
+
     useEffect(() => {
         fetchGenres();
     }, [fetchGenres]);
@@ -82,12 +80,16 @@ const CategoryList = ({ category: propCategory }) => {
 
     const handleGenreClick = async (genreId) => {
         navigate(route['category/genre/:id'].replace(':id', genreId));
-    }
+    };
+
     const handleScroll = useCallback(() => {
-        if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 500 && !loading) {
-            if (page < totalPages) {
-                setPage((prevPage) => prevPage + 1);
-            }
+        const scrollPosition = window.innerHeight + window.scrollY;
+        const threshold = document.body.offsetHeight - 500;
+
+        console.log(`Scroll Position: ${scrollPosition}, Threshold: ${threshold}`);
+        if (scrollPosition >= threshold && !loading && page < totalPages) {
+            console.log("Loading next page...");
+            setPage((prevPage) => prevPage + 1);
         }
     }, [loading, page, totalPages]);
 
@@ -97,7 +99,6 @@ const CategoryList = ({ category: propCategory }) => {
     }, [handleScroll]);
 
     if (!allCategories.some((cat) => cat.id === category)) {
-        // 알 수 없는 카테고리일 경우
         return (
             <div className={styles.unknownCategory}>
                 <h1>카테고리 리스트</h1>
@@ -109,8 +110,6 @@ const CategoryList = ({ category: propCategory }) => {
                         </li>
                     ))}
                 </ul>
-
-                {/* 태그 버튼 */}
                 <div className={styles.tagsContainer}>
                     <h2>영화 태그</h2>
                     <div className={styles.tagsList}>
@@ -126,26 +125,26 @@ const CategoryList = ({ category: propCategory }) => {
                     </div>
                 </div>
             </div>
-                );
-                }
+        );
+    }
 
-                return (
-                <div className="category-page">
-                    <h1>{categoryName(category)}</h1>
-                    <div className="movies-grid">
-                        {movies.map((movie) => (
-                            <MovieCard
-                                key={movie.id}
-                                movie={movie}
-                                likedMovies={likedMovies}
-                                onToggleRecommend={handleToggleRecommend}
-                                onMovieClick={() => console.log(`Clicked movie ID: ${movie.id}`)}
-                            />
-                        ))}
-                    </div>
-                    {loading && <div className="loading-spinner">Loading...</div>}
-                </div>
-                );
-                };
+    return (
+        <div className="category-page">
+            <h1>{categoryName(category)}</h1>
+            <div className="movies-grid">
+                {movies.map((movie) => (
+                    <MovieCard
+                        key={movie.id}
+                        movie={movie}
+                        likedMovies={likedMovies}
+                        onToggleRecommend={handleToggleRecommend}
+                        onMovieClick={() => console.log(`Clicked movie ID: ${movie.id}`)}
+                    />
+                ))}
+            </div>
+            {loading && <div className="loading-spinner">Loading...</div>}
+        </div>
+    );
+};
 
-                export default CategoryList;
+export default CategoryList;

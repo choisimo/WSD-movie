@@ -53,11 +53,12 @@ const SignIn = () => {
         e.preventDefault();
         const email = emailRef.current.value;
         const password = passwordRef.current.value;
+        const rememberMe = rememberMeRef.current.checked;
 
         setError('');
 
         try {
-            await AuthService.tryLogin(email, password);
+            await AuthService.tryLogin(email, password, rememberMe);
             navigate('/');
             setError('');
         } catch (error) {
