@@ -22,6 +22,9 @@ jobs:
         with:
           node-version: '16'
 
+      - name: Navigate to react root
+        working-directory: ./react-app
+
       - name: Install dependencies
         run: npm install # 프로젝트에 맞게 변경
 
