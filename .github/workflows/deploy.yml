@@ -17,6 +17,9 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
+      - name: Debug workspace
+        run: ls -R ${{ github.workspace }}
+
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
@@ -24,16 +27,16 @@ jobs:
 
       - name: Install dependencies
         run: npm install
-        working-directory: ${{ github.repository }}/react-app # 프로젝트 루트 경로로 변경
+        working-directory: ${{ github.workspace }}/react-app
 
       - name: Build project
         run: npm run build
-        working-directory: ${{ github.repository }}/react-app # 빌드 경로 지정
+        working-directory: ${{ github.workspace }}/react-app
 
       - name: Upload artifact for deployment
         uses: actions/upload-pages-artifact@v1
         with:
-          path: ${{ github.repository }}/react-app/build # 빌드 결과물 경로 지정
+          path: ${{ github.workspace }}/react-app/build
 
   deploy:
     needs: build
