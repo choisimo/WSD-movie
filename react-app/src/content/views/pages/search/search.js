@@ -275,6 +275,7 @@ const SearchPage = () => {
                             key={movie.id}
                             movie={movie}
                             likedMovies={likedMovies}
+                            onToggleBookmark={() => toggleRecommend(movie)} // 북마크 기능
                             onMovieClick={(id) => console.log(`Navigating to movie with id ${id}`)}
                         />
                     ))}
