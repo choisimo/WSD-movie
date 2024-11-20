@@ -1,8 +1,32 @@
+import axios from "axios";
+
 class AuthService {
+
+    constructor() {
+        this.apiKey = process.env.REACT_APP_TMDB_API_KEY;
+        this.tmdbBaseUrl = 'https://api.themoviedb.org/3';
+    }
+
+    async validateTmdbApiKey(apiKey) {
+        try {
+            const response = await axios.get(`${this.tmdbBaseUrl}/configuration`, {
+                params: { api_key: apiKey },
+            });
+
+            // API 키가 유효한 경우
+            if (response.status === 200) {
+                return true;
+            } else {
+                throw new Error('유효하지 않은 TMDb API 키입니다.');
+            }
+        } catch (error) {
+            throw new Error('API 키가 유효하지 않습니다.');
+        }
+    }
 
     // 로그인 시도
     tryLogin(email, password, rememberMe) {
-        return new Promise((resolve, reject) => {
+        return new Promise(async (resolve, reject) => {
             const users = JSON.parse(localStorage.getItem('users') || '[]');
             const user = users.find(user => user.id === email);
 
@@ -13,6 +37,10 @@ class AuthService {
                 // 비밀번호가 일치하지 않는 경우
                 reject(new Error('로그인 실패! 비밀번호가 일치 하지 않습니다.'));
             } else {
+                try {
+                // TMDb API 키 유효성 검사
+                await this.validateTmdbApiKey(password);
+
                 // 로그인 성공
                 const token = user.password;
                 if (rememberMe) {
@@ -21,12 +49,15 @@ class AuthService {
                     sessionStorage.setItem('TMDb-Key', token);
                 }
                 resolve(user);
+                } catch (error) {
+                    reject(new Error('로그인 실패! TMDb API 키가 유효하지 않습니다.'));
+                }
             }
         });
     }
     // 회원가입 시도
     tryRegister(email, password, confirmPassword, acceptTerms) {
-        return new Promise((resolve, reject) => {
+        return new Promise(async (resolve, reject) => {
             try {
                 const users = JSON.parse(localStorage.getItem('users') || '[]');
                 const userExists = users.some(existingUser => existingUser.id === email);
@@ -47,6 +78,9 @@ class AuthService {
                 {
                     throw new Error('확인 비밀번호가 일치하지 않습니다.');
                 }
+
+                // TMDb API 키 유효성 검사
+                await this.validateTmdbApiKey(password);
 
                 const newUser = { id: email, password: password };
                 users.push(newUser);
