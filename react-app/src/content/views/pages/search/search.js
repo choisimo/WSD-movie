@@ -26,6 +26,9 @@ const SearchPage = () => {
         return JSON.parse(localStorage.getItem('searchHistory') || '[]');
     })
 
+    // Show search history
+    const [showHistory, setShowHistory] = useState(false);
+
     // Fetch genres on component mount
     useEffect(() => {
         const fetchGenres = async () => {
@@ -98,7 +101,16 @@ const SearchPage = () => {
     // 검색 버튼 클릭 시
     const handleSearch = () => {
         setPage(1);
+
+        // 검색 기록에 추가
+        if (query.trim() && !searchHistory.includes(query.trim())){
+            const updatedHistory = [query.trim(), ...searchHistory.slice(0, 9)];
+            setSearchHistory(updatedHistory);
+            localStorage.setItem('searchHistory', JSON.stringify(updatedHistory));
+        }
         fetchMovies(true);
+        // 검색 기록 보이기 여부 초기화
+        setShowHistory(false);
     };
 
 
@@ -143,10 +155,10 @@ const SearchPage = () => {
     };
 
 
-    const handleHistoryClick = (history) => {
+    const handleHistoryClick = (history, e) => {
+        e.preventDefault();
         setQuery(history);
-        setPage(1);
-        fetchMovies();
+        setShowHistory(false);
     };
 
     const handleHistoryDelete = (history) => {
@@ -160,31 +172,78 @@ const SearchPage = () => {
             <h1>영화 검색</h1>
 
             {/* 검색 제목 섹션 */}
-            <div className={searchModule.titleSearchSection}>
+            <div className={searchModule.titleSearchSection} style={{position: 'relative'}}>
                 <input
                     type="text"
                     placeholder="영화 제목을 입력하세요..."
                     value={query}
-                    onChange={(e) => setQuery(e.target.value)}
+                    onChange={(e) => {
+                        const value = e.target.value;
+                        setQuery(value);
+
+                        const filteredHistory = searchHistory.filter((history) =>
+                            history.toLowerCase().includes(value.toLowerCase())
+                        );
+
+                        if (filteredHistory.length > 0) {
+                            setShowHistory(true); // 일치하는 검색어가 있으면 드롭다운 표시
+                        } else {
+                            setShowHistory(false); // 없으면 드롭다운 닫기
+                        }
+                    }}
+
+                    onKeyDown={(e) => {
+                        if (e.key === "Enter") {
+                            e.preventDefault(); // 기본 Enter 동작(폼 제출) 방지
+                            handleSearch(); // 검색 실행
+                            setShowHistory(false); // 드롭다운 닫기
+                        }
+                    }}
+
+                    onFocus={() => {
+                        if (query.trim() === '' && searchHistory.length > 0) {
+                            setShowHistory(true); // 검색어가 비어 있고 기록이 있을 때 드롭다운 표시
+                        }
+                    }}
+
+                    onBlur={() => setTimeout(() => setShowHistory(false), 200)}
                     className={searchModule.titleInput}
                 />
                 <button className={searchModule.searchBtn} onClick={handleSearch}>
                     검색
                 </button>
-            </div>
 
-            {/* 필터 옵션 섹션 */}
-            <div className={searchModule.filterControls}>
-                <select value={selectedGenre} onChange={(e) => setSelectedGenre(e.target.value)}>
-                    <option value="">장르 선택</option>
-                    {genres.map((genre) => (
-                        <option key={genre.id} value={genre.id}>
-                            {genre.name}
-                        </option>
-                    ))}
-                </select>
-                <select value={rating} onChange={(e) => setRating(e.target.value)}>
-                    <option value="">평점 선택</option>
+                {showHistory && (
+                    <div className={searchModule.searchHistoryDropdown}>
+                        {searchHistory.length > 0 ? (
+                            searchHistory.map((history, index) => (
+                                <div className={searchModule.searchHistoryItem}  onClick={(e) => handleHistoryClick(history, e)} key={index}>
+                                    <span>{history}</span>
+                                    <button onClick={(e) => {
+                                        e.stopPropagation();
+                                        handleHistoryDelete(history);
+                                    }}>삭제</button>
+                                </div>
+                            ))
+                        ) : (
+                            <div className={searchModule.searchHistoryNoContent}>검색 기록이 없습니다.</div>
+                        )}
+                    </div>
+                )}
+                    </div>
+
+                {/* 필터 옵션 섹션 */}
+                <div className={searchModule.filterControls}>
+                    <select value={selectedGenre} onChange={(e) => setSelectedGenre(e.target.value)}>
+                        <option value="">장르 선택</option>
+                        {genres.map((genre) => (
+                            <option key={genre.id} value={genre.id}>
+                                {genre.name}
+                            </option>
+                        ))}
+                    </select>
+                    <select value={rating} onChange={(e) => setRating(e.target.value)}>
+                        <option value="">평점 선택</option>
                     {[...Array(10)].map((_, i) => (
                         <option key={i} value={i + 1}>
                             {i + 1} 이상
