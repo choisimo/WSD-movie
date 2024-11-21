@@ -1,0 +1,97 @@
+.tableViewContainer {
+    margin: 20px auto;
+    padding: 10px;
+    width: 100%;
+    max-width: 1200px;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    background-color: rgba(69, 67, 67, 0.42);
+}
+
+.moviesTable {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: fixed; /* 열의 너비를 균등하게 분배 */
+    background-color: #222; /* 테이블 배경색 */
+    border: 1px solid #444; /* 테두리 추가 */
+    border-radius: 8px; /* 모서리를 둥글게 */
+    overflow: hidden;
+}
+
+.moviesTable th,
+.moviesTable td {
+    padding: 12px 16px;
+    border-bottom: 1px solid #ddd;
+}
+
+.moviesTable th {
+    background-color: rgba(158, 152, 152, 0.42);
+    font-weight: bold;
+}
+
+.moviesTable tr:hover {
+    background-color: rgba(14, 13, 13, 0.64);
+}
+
+.moviesTable img {
+    display: block;
+    margin: 0 auto;
+    max-width: 80px;
+    border-radius: 4px;
+}
+
+.paginationContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+    gap: 10px;
+}
+
+.paginationButton {
+    padding: 8px 16px;
+    background-color: rgb(255, 30, 0);
+    color: white;
+    width: auto;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin-bottom: 10px;
+}
+
+.paginationButton:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+}
+
+.paginationButton:hover:not(:disabled) {
+    background-color: rgba(220, 13, 13, 0.75);
+}
+
+.bookmarkButton {
+    padding: 10px 10px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.bookmarkButton.active {
+    background-color: #ff0000;
+}
+
+.bookmarkButton:hover {
+    background-color: #333333;
+}
+
+.titleButton {
+    background-color: rgba(43, 40, 40, 0.42);
+    padding: 10px 12px;
+}
+
+.titleButton:hover {
+    background-color: rgba(158, 152, 152, 0.42);
+    scale: calc(1.1);
+}

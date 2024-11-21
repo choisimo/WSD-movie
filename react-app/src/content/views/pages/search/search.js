@@ -127,7 +127,15 @@ const SearchPage = () => {
         }
     }, [page, fetchMovies]);
 
-
+    const handleToggleRecommend = (movie) => {
+        setLikedMovies((prevLikedMovies) => {
+            const updatedMovies = prevLikedMovies.some((m) => m.id === movie.id)
+                ? prevLikedMovies.filter((m) => m.id !== movie.id)
+                : [...prevLikedMovies, movie];
+            localStorage.setItem('likedMovies', JSON.stringify(updatedMovies));
+            return updatedMovies;
+        });
+    };
 // Infinite scroll handling
     const handleScroll = useCallback(() => {
         if (
@@ -275,7 +283,7 @@ const SearchPage = () => {
                             key={movie.id}
                             movie={movie}
                             likedMovies={likedMovies}
-                            onToggleBookmark={() => toggleRecommend(movie)} // 북마크 기능
+                            onToggleRecommend={handleToggleRecommend}
                             onMovieClick={(id) => console.log(`Navigating to movie with id ${id}`)}
                         />
                     ))}
