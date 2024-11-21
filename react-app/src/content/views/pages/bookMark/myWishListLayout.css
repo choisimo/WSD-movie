@@ -1,15 +1,28 @@
 .category-page {
-    background-color: #141414;
-    color: white;
-    padding: 20px;
+    width: 100%;
+    max-width: 100%;
+    overflow-x: hidden; /* 수평 스크롤 제거 */
+    box-sizing: border-box;
 }
+
 
 .movies-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); /* 최소 150px, 최대 비율로 */
     gap: 20px;
     margin-top: 20px;
+    width: 100%;
+    box-sizing: border-box;
 }
+
+/* 포스터 이미지: 화면 크기에 맞게 조정 */
+.movie-item img {
+    width: 100%; /* 부모 요소에 맞게 이미지 크기 조정 */
+    height: auto; /* 비율 유지 */
+    object-fit: cover; /* 잘림 방지 */
+    border-radius: 8px;
+}
+
 
 .movie-item {
     text-decoration: none;
@@ -23,11 +36,6 @@
     position: relative;
 }
 
-.movie-item img {
-    width: 100%;
-    border-radius: 8px;
-    transition: transform 0.2s;
-}
 
 .movie-item:hover img {
     transform: scale(1.05);
