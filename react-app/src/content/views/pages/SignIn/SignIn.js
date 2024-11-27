@@ -47,10 +47,10 @@ const SignIn = () => {
         setError('');
         setTimeout(() => {
             setIsLoginVisible(!isLoginVisible);
-        }, 300);
+        }, 600);
         setTimeout(() => {
             setIsAnimating(false);
-        }, 600);
+        }, 1200);
     };
 
     const handleLogin = async (e) => {
@@ -103,7 +103,12 @@ const SignIn = () => {
                             {error}
                         </div>
                     )}
-                    <div className={`card ${isAnimating ? 'jumping' : ''} ${!isLoginVisible ? 'fading-in' : ''}`} id="login">
+                    <div
+                        className={`card ${isAnimating ? 'flip-out' : ''} ${
+                            isLoginVisible ? '' : 'flip-in'
+                        }`}
+                        id="login"
+                    >
                         {isLoginVisible && (
                             <form onSubmit={handleLogin}>
                                 <h1>로그인</h1>
@@ -133,23 +138,28 @@ const SignIn = () => {
                                     </button>
                                 </div>
                                 <span className="checkbox remember">
-                                    <input
-                                        ref={rememberMeRef}
-                                        type="checkbox"
-                                        id="remember"
-                                    />
-                                    <label htmlFor="remember" className="read-text">사용자 기억</label>
-                                </span>
+                                <input
+                                    ref={rememberMeRef}
+                                    type="checkbox"
+                                    id="remember"
+                                />
+                                <label htmlFor="remember" className="read-text">사용자 기억</label>
+                            </span>
                                 <button type="submit">Login</button>
                             </form>
                         )}
                         {isLoginVisible && (
                             <span className="account-check" onClick={toggleCard}>
-                                계정이 없나요? <b>회원가입</b>
-                            </span>
+                            계정이 없나요? <b>회원가입</b>
+                        </span>
                         )}
                     </div>
-                    <div className={`card ${isAnimating ? 'jumping' : ''} ${isLoginVisible ? 'fading-in' : ''}`} id="register">
+                    <div
+                        className={`card ${isAnimating ? 'flip-out' : ''} ${
+                            !isLoginVisible ? 'flip-in' : ''
+                        }`}
+                        id="register"
+                    >
                         {!isLoginVisible && (
                             <form onSubmit={handleRegister}>
                                 <h1>회원가입</h1>
@@ -196,22 +206,22 @@ const SignIn = () => {
                                     </button>
                                 </div>
                                 <span className="checkbox terms">
-                                    <input
-                                        ref={acceptTermsRef}
-                                        type="checkbox"
-                                        id="terms"
-                                    />
-                                    <label htmlFor="terms" className="read-text">
-                                        <b>이용약관</b>에 동의합니다
-                                    </label>
-                                </span>
+                                <input
+                                    ref={acceptTermsRef}
+                                    type="checkbox"
+                                    id="terms"
+                                />
+                                <label htmlFor="terms" className="read-text">
+                                    <b>이용약관</b>에 동의합니다
+                                </label>
+                            </span>
                                 <button type="submit">Register</button>
                             </form>
                         )}
                         {!isLoginVisible && (
                             <span className="account-check" onClick={toggleCard}>
-                                이미 계정이 있다면 <b>로그인</b>
-                            </span>
+                            이미 계정이 있다면 <b>로그인</b>
+                        </span>
                         )}
                     </div>
                 </div>
