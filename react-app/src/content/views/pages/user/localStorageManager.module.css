@@ -1,0 +1,108 @@
+/* localStorageManager.module.css */
+:root {
+    --bg-color: #ffffff;
+    --text-color: #333333;
+    --header-bg: #f4f4f4;
+    --button-bg: #007bff;
+    --button-hover-bg: #0056b3;
+}
+
+[data-theme='dark'] {
+    --bg-color: #1e1e1e;
+    --text-color: #ffffff;
+    --header-bg: #333333;
+    --button-bg: #555555;
+    --button-hover-bg: #777777;
+}
+
+.container {
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    padding: 20px;
+    font-family: Arial, sans-serif;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.header {
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+
+.inputGroup {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.input {
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    flex: 1;
+}
+
+.button {
+    padding: 10px 20px;
+    font-size: 16px;
+    border: none;
+    background-color: var(--button-bg);
+    color: white;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: background-color 0.3s ease;
+}
+
+.button:hover {
+    background-color: var(--button-hover-bg);
+}
+
+.table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+.table th,
+.table td {
+    padding: 10px;
+    border: 1px solid #ccc;
+    text-align: left;
+}
+
+.table th {
+    background-color: var(--header-bg);
+}
+
+.clearButton {
+    margin-top: 20px;
+    padding: 10px 20px;
+    font-size: 16px;
+    border: none;
+    background-color: #d9534f;
+    color: white;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: background-color 0.3s ease;
+}
+
+.clearButton:hover {
+    background-color: #c9302c;
+}
+
+.themeToggle {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background-color: var(--button-bg);
+    color: white;
+    border: none;
+    padding: 10px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.themeToggle:hover {
+    background-color: var(--button-hover-bg);
+}

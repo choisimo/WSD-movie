@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import {Link, useNavigate} from 'react-router-dom';
 import './header.css';
 import './header_categoryList.css';
+import {useTheme} from 'content/components/context/themeContext';
 import routes from "routes.json";
 import { TicketIcon, SearchIcon, BellIcon, UserIcon, BarsIcon, TimesIcon } from 'artifacts/icons';
 
@@ -10,6 +11,7 @@ const Header = () => {
     const navigate = useNavigate();
     const [isScrolled, setIsScrolled] = useState(false);
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+    const { theme, toggleTheme } = useTheme();
 
     useEffect(() => {
         const handleScroll = () => {
@@ -48,13 +50,19 @@ const Header = () => {
                     <SearchIcon/>
                 </button>
 
-                <button className="icon-button" onClick={() => navigate('/notifications')}>
+{/*                <button className="icon-button" onClick={() => navigate('/notifications')}>
                     <BellIcon/>
-                </button>
+                </button>*/}
 
-                <button className="icon-button" onClick={() => navigate('/profile')}>
+                <button className="icon-button" onClick={() => navigate(routes.setting)}>
                     <UserIcon/>
                 </button>
+
+                {/* 다크모드 버튼 추가 */}
+                <button className="icon-button dark-mode-button" onClick={toggleTheme}>
+                    {theme === 'light' ? '🌙' : '☀️'}
+                </button>
+
 
                 <button className="icon-button mobile-menu-button" onClick={toggleMobileMenu}>
                     <BarsIcon/>

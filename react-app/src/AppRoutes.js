@@ -12,6 +12,7 @@ import CategoryList from "content/views/pages/category/categoryList";
 import MyWishLists from "content/views/pages/bookMark/myWishLists";
 import SearchPage from "content/views/pages/search/search";
 import GenreList from "content/views/pages/genre/GenreList";
+import UserPage from "content/views/pages/user/userPage";
 
 const AppRoutes = () => {
 
@@ -41,6 +42,16 @@ const AppRoutes = () => {
 
 
             {/* 보호된 경로 */}
+            <Route
+                path={routes.setting}
+                element={
+                <ProtectionRouter>
+                    <UserPage />
+                </ProtectionRouter>
+                }
+                />
+
+
             <Route
                 path={routes.dashboard}
                 element={
