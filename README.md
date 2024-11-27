@@ -163,3 +163,180 @@ WSD-movie/
 
 ---
 
+아래는 제공된 TMDB API 관련 함수들을 정리한 **API 문서 (Markdown 형식)**입니다.
+
+---
+
+# TMDB API 문서
+
+---
+
+## 공통 설정
+
+### Axios 인스턴스
+TMDB API 호출은 Axios 인스턴스를 사용합니다.
+
+```javascript
+const api = axios.create({
+    baseURL: 'https://api.themoviedb.org/3',
+    params: {
+        api_key: process.env.REACT_APP_TMDB_API_KEY,
+        language: 'ko-KR'
+    }
+});
+```
+
+### 공통 에러 처리
+모든 API 응답은 에러 발생 시 콘솔에 상세한 오류를 출력합니다.
+
+---
+
+## API 함수 목록
+
+### 1. 영화 목록 가져오기
+#### `getMovies(type)`
+특정 영화 목록(예: 인기 영화, 현재 상영 중인 영화 등)을 가져옵니다.
+
+- **인자**: `type` (예: `popular`, `now_playing`, `top_rated`)
+- **결과**: 영화 목록 배열
+
+```javascript
+const movies = await getMovies('popular');
+```
+
+---
+
+### 2. 카테고리 영화 목록 가져오기
+#### `getCategoryList(type, page)`
+특정 카테고리의 영화 목록을 페이지 단위로 가져옵니다.
+
+- **인자**:
+   - `type`: 카테고리 유형 (예: `popular`, `now_playing`)
+   - `page`: 페이지 번호 (기본값: 1)
+- **결과**: 영화 데이터와 총 페이지 수
+
+```javascript
+const categoryList = await getCategoryList('popular', 2);
+```
+
+---
+
+### 3. 장르별 영화 목록 가져오기
+#### `getGenreMovieList(genreId, page)`
+특정 장르에 속한 영화 목록을 가져옵니다.
+
+- **인자**:
+   - `genreId`: 장르 ID
+   - `page`: 페이지 번호 (기본값: 1)
+- **결과**: 영화 데이터와 총 페이지 수
+
+```javascript
+const genreMovies = await getGenreMovieList(28, 1); // Action 장르
+```
+
+---
+
+### 4. 장르 목록 가져오기
+#### `getGenres()`
+영화의 모든 장르를 가져옵니다.
+
+- **결과**: 장르 배열
+
+```javascript
+const genres = await getGenres();
+```
+
+---
+
+### 5. 영화 상세 정보 가져오기
+#### `getDetailMovie(movieId)`
+특정 영화의 상세 정보를 가져옵니다.
+
+- **인자**: `movieId` (영화 ID)
+- **결과**: 영화 상세 정보
+
+```javascript
+const movieDetails = await getDetailMovie(12345);
+```
+
+---
+
+### 6. 유사한 영화 가져오기
+#### `getSimilarMovies(genreIds, page)`
+특정 장르 ID 기반으로 유사한 영화를 가져옵니다.
+
+- **인자**:
+   - `genreIds`: 장르 ID 배열
+   - `page`: 페이지 번호
+- **결과**: 영화 데이터
+
+```javascript
+const similarMovies = await getSimilarMovies([28, 12], 1);
+```
+
+---
+
+### 7. 영화 검색
+#### `searchMovies({ query, page, genre, rating, sort, year })`
+키워드 또는 조건을 기반으로 영화를 검색합니다.
+
+- **인자**:
+   - `query`: 검색 키워드 (없을 경우 조건 기반 검색)
+   - `page`: 페이지 번호 (기본값: 1)
+   - `genre`: 장르 ID
+   - `rating`: 최소 평점
+   - `sort`: 정렬 기준 (기본값: `popularity.desc`)
+   - `year`: 특정 출시 연도
+- **결과**: 검색된 영화 데이터
+
+```javascript
+const searchResults = await searchMovies({ query: 'Inception' });
+```
+
+---
+
+### 8. 영화 배우 정보 가져오기
+#### `getMovieCredits(movieId)`
+특정 영화의 배우 및 제작진 정보를 가져옵니다.
+
+- **인자**: `movieId` (영화 ID)
+- **결과**: 배우 및 제작진 데이터
+
+```javascript
+const credits = await getMovieCredits(12345);
+```
+
+---
+
+### 9. 영화 리뷰 가져오기
+#### `getMovieReviews(movieId)`
+특정 영화의 리뷰를 가져옵니다.
+
+- **인자**: `movieId` (영화 ID)
+- **결과**: 리뷰 배열
+
+```javascript
+const reviews = await getMovieReviews(12345);
+```
+
+---
+
+### 10. 배우 출연 영화 가져오기
+#### `getPersonMovieCredits(personId)`
+특정 배우가 출연한 영화 목록을 가져옵니다.
+
+- **인자**: `personId` (배우 ID)
+- **결과**: 출연한 영화 목록
+
+```javascript
+const personMovies = await getPersonMovieCredits(1234);
+```
+
+---
+
+## 참고
+- 모든 함수는 TMDB API 키를 필요로 하며, 환경 변수 `REACT_APP_TMDB_API_KEY`에 저장됩니다.
+- 응답 데이터는 TMDB API 문서를 참고하세요: [TMDB API 문서](https://developer.themoviedb.org/docs)
+
+--- 
+
