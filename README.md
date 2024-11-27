@@ -163,10 +163,6 @@ WSD-movie/
 
 ---
 
-아래는 제공된 TMDB API 관련 함수들을 정리한 **API 문서 (Markdown 형식)**입니다.
-
----
-
 # TMDB API 문서
 
 ---
