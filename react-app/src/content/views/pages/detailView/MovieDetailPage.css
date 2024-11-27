@@ -22,7 +22,6 @@
 }
 
 
-
 .movie-content {
     display: flex;
     gap: 20px;
@@ -192,4 +191,8 @@
 
 .cast-list::-webkit-scrollbar {
     display: none; /* Chrome, Safari에서 스크롤 바 숨기기 */
+}
+
+.content::-webkit-scrollbar {
+    display: none;
 }

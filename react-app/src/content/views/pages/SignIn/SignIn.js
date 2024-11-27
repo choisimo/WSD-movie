@@ -2,20 +2,24 @@ import React, {useEffect, useRef, useState} from 'react';
 import { useNavigate } from 'react-router-dom';
 import './SignIn.css';
 import AuthService from "content/views/pages/SignIn/AuthService";
+import {useAlert} from "content/components/alert/customAlert";
 
 const SignIn = () => {
 
     const navigate = useNavigate();
+    const {showAlert} = useAlert();
 
     useEffect(() => {
         const checkLoginStatus = async () => {
             try {
                 const loggedIn = await AuthService.isLoggedIn();
                 if (loggedIn) {
+                    showAlert('이미 로그인 되어 있습니다.');
                     navigate('/');
                 }
             } catch (error) {
                 console.error('Failed to check login status:', error);
+                showAlert('Failed to check login status:', error);
             }
         };
 
@@ -59,10 +63,12 @@ const SignIn = () => {
 
         try {
             await AuthService.tryLogin(email, password, rememberMe);
+            showAlert('로그인 되었습니다.');
             navigate('/');
             setError('');
         } catch (error) {
             setError(error.message);
+            showAlert(error.message);
         }
     };
 
@@ -84,6 +90,7 @@ const SignIn = () => {
             setError('');
         } catch (error) {
             setError(error.message);
+            showAlert(error.message);
         }
     };
 

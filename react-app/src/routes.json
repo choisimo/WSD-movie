@@ -1,6 +1,6 @@
 {
   "home": "/",
-  "setting": "/user/setting",
+  "setting": "/setting",
   "SignIn": "/signin",
   "dashboard": "/page/dashboard",
   "search": "/search",

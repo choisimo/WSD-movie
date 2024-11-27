@@ -9,6 +9,28 @@ const api = axios.create({
     }
 });
 
+// 공통 에러 핸들링 인터셉터
+api.interceptors.response.use(
+    (response) => response, // 요청 성공 시 원래 응답 반환
+    (error) => {
+        // 요청 실패 시 로직
+        console.error('TMDB API Error:', error);
+        if (error.response) {
+            // 서버 응답이 있는 경우
+            console.error('Response data:', error.response.data);
+            console.error('Status code:', error.response.status);
+        } else if (error.request) {
+            // 요청이 전송되었지만 응답이 없는 경우
+            console.error('Request data:', error.request);
+        } else {
+            // 요청 설정 중 에러 발생
+            console.error('Error message:', error.message);
+        }
+        throw error; // 에러를 다시 던져 개별 함수에서 처리 가능
+    }
+);
+
+
 // 영화 목록을 불러오는 함수
 export const getMovies = async (type) => {
     try {

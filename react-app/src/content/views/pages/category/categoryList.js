@@ -8,6 +8,7 @@ import categoryListStyle from './categoryList.module.css';
 import route from 'routes.json';
 import MovieCard from 'content/views/pages/movieCardView/MovieCard';
 import { getLikedMovies } from "content/components/utility/bookMark/likeMovies";
+import {useAlert} from "content/components/alert/customAlert";
 
 const allCategories = [
     { id: 'popular', name: '인기 영화' },
@@ -29,7 +30,7 @@ const CategoryList = ({ category: propCategory }) => {
     const [showTopBtn, setShowTopBtn] = useState(false);
     const [currentPage, setCurrentPage] = useState(1);
     const [likedMovies, setLikedMovies] = useState(getLikedMovies || []);
-
+    const {showAlert} = useAlert();
     const navigate = useNavigate();
 
     const categoryName = (category) => {
@@ -64,6 +65,7 @@ const CategoryList = ({ category: propCategory }) => {
             setGenres(data);
         } catch (error) {
             console.error('Error fetching genres:', error);
+            showAlert('error', '장르를 불러오는 중 오류가 발생했습니다.');
         }
     }, []);
 
