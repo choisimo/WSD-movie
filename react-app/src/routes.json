@@ -12,5 +12,7 @@
   "category/upcoming": "/upcoming",
   "category/now_playing": "/now_playing",
   "category/trending": "/trending",
-  "category/genre/:id": "/genre/:id"
+  "category/genre/:id": "/genre/:id",
+  "KakaoRedirect": "/oauth/kakao",
+  "kakaoUserPage": "/kakaoUserPage"
 }

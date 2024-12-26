@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import './SignIn.css';
 import AuthService from "content/views/pages/SignIn/AuthService";
 import {useAlert} from "content/components/alert/customAlert";
+import OauthLogin from "content/views/pages/SignIn/OauthLogin";
 
 const SignIn = () => {
 
@@ -147,6 +148,9 @@ const SignIn = () => {
                             </span>
                                 <button type="submit">Login</button>
                             </form>
+                        )}
+                        {isLoginVisible && (
+                            <OauthLogin /> // OAuth 로그인 추가
                         )}
                         {isLoginVisible && (
                             <span className="account-check" onClick={toggleCard}>
