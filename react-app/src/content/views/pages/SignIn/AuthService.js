@@ -24,6 +24,47 @@ class AuthService {
         }
     }
 
+    // getAuthenticated
+    async checkAuthentication() {
+        const accessToken = localStorage.getItem('kakao_access_token');
+        if (!accessToken) {
+            console.error('Access token is missing');
+            return { isAuthenticated: false, userInfo: null };
+        }
+
+        try {
+            const response = await axios.get('https://kapi.kakao.com/v2/user/me', {
+                headers: {
+                    Authorization: `Bearer ${accessToken}`,
+                },
+            });
+            return { isAuthenticated: true, userInfo: response.data };
+        } catch (error) {
+            console.error("failed to fetch user info:", error);
+            return { isAuthenticated: false, userInfo: null };
+        }
+    }
+
+    // logout kakao
+    async logoutKakao() {
+        const accssToken = localStorage.getItem('kakao_access_token');
+        if (!accssToken) {
+            console.error('Access token is missing');
+            return;
+        }
+        try {
+            const response = await axios.post('https://kapi.kakao.com/v1/user/logout', null, {
+                headers: {
+                    Authorization: `Bearer ${accssToken}`,
+                },
+            });
+            console.log('Kakao logout:', response.data);
+            localStorage.removeItem('kakao_access_token');
+        } catch (error) {
+            console.error('Failed to logout:', error);
+        }
+    }
+
     // 로그인 시도
     tryLogin(email, password, rememberMe) {
         return new Promise(async (resolve, reject) => {
@@ -94,8 +135,9 @@ class AuthService {
 
     isLoggedIn(){
         return new Promise((resolve, reject) => {
-            const token = localStorage.getItem('TMDb-Key');
-            if (token) {
+            const token = localStorage.getItem('TMDb-Key') || sessionStorage.getItem('TMDb-Key');
+            const kakaoToken = localStorage.getItem('kakao_access_token');
+            if (token || (token && kakaoToken)) {
                 resolve(true);
             } else {
                 resolve(false);
